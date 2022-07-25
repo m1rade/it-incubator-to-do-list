@@ -20,6 +20,11 @@ function App() {
         // функция useState работает асинхронно. Хук для асинхронный операций useEffect()
     };
 
+    // changing the state of tasks completion
+    const changeFilter = (filter: FilterValuesType) => {
+        setFilter(filter);
+    }
+
     // variable to track user's current choose
     let tasksForRender;
 
@@ -36,7 +41,7 @@ function App() {
 
     return (
         <>
-            <TodoList title={"What to learn"} tasks={tasksForRender} removeTask={removeTask}/>
+            <TodoList title={"What to learn"} tasks={tasksForRender} removeTask={removeTask} changeFilter={changeFilter}/>
         </>
     );
 }
