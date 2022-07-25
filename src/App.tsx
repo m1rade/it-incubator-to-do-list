@@ -30,10 +30,10 @@ function App() {
 
     switch (filter) {
         case "active":
-            tasksForRender = tasks.filter(task => task.isDone === false);
+            tasksForRender = tasks.filter(task => !task.isDone);
             break;
         case "completed":
-            tasksForRender = tasks.filter(task => task.isDone === true);
+            tasksForRender = tasks.filter(task => task.isDone);
             break;
         default:
             tasksForRender = tasks;
