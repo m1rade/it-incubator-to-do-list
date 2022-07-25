@@ -3,18 +3,22 @@ import './App.css';
 import TodoList, {TaskType} from "./TodoList";
 
 function App() {
-    const tasks: Array<TaskType> = [
+    let tasks: Array<TaskType> = [
         {id: 1, title: "HTML", isDone: true},
         {id: 2, title: "CSS", isDone: true},
         {id: 3, title: "JS/TS", isDone: false},
-        {id: 4, title: "JS/TS", isDone: false},
-        {id: 5, title: "JS/TS", isDone: false},
-        {id: 6, title: "JS/TS", isDone: false},
 
     ];
+
+    const removeTask = (taskID: number) => {
+        // получили новый массив, исключив элемент
+        tasks = tasks.filter(task => task.id !== taskID);
+        console.log(tasks);
+    }
+
     return (
         <>
-            <TodoList title={"What to learn"} tasks={tasks}/>
+            <TodoList title={"What to learn"} tasks={tasks} removeTask={removeTask}/>
         </>
     );
 }
