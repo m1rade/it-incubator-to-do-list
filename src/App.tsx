@@ -7,6 +7,10 @@ function App() {
         {id: 0, title: "HTML", isDone: true},
         {id: 1, title: "CSS", isDone: true},
         {id: 2, title: "JS/TS", isDone: false},
+        {id: 3, title: "JS/TS", isDone: false},
+        {id: 3, title: "JS/TS", isDone: false},
+        {id: 3, title: "JS/TS", isDone: false},
+
     ];
     return (
         <>

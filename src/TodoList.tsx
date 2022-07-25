@@ -14,7 +14,10 @@ export type TaskType = {
 const TodoList: FC<TodoListPropsType> = (props) => {
     const tasksItems = props.tasks.map((task: TaskType) => {
         return (
-            <li><input type="checkbox" checked={task.isDone}/> <span>{task.title}</span></li>
+            <li>
+                <input type="checkbox" checked={task.isDone}/> <span>{task.title}</span>
+                <button onClick={() => alert(task.id)}>Delete</button>
+            </li>
         )
     })
 
