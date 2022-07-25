@@ -14,13 +14,14 @@ function App() {
     //creating state for buttons that shows what tasks have been done and haven't
     const [filter, setFilter] = React.useState<FilterValuesType>("all");
 
+    //update tasks state
     const removeTask = (taskID: number) => {
         // получили новый массив, исключив элемент
         setTasks(tasks.filter(task => task.id !== taskID)); // 10ms
         // функция useState работает асинхронно. Хук для асинхронный операций useEffect()
     };
 
-    // changing the state of tasks completion
+    // update the state of tasks completion
     const changeFilter = (filter: FilterValuesType) => {
         setFilter(filter);
     }
