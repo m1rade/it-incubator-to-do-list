@@ -11,7 +11,7 @@ function App() {
         {id: 3, title: "JS/TS", isDone: false},
     ]);
 
-    //creating state for buttons
+    //creating state for buttons that shows what tasks have been done and haven't
     const [filter, setFilter] = React.useState<FilterValuesType>("all");
 
     const removeTask = (taskID: number) => {
@@ -27,7 +27,7 @@ function App() {
 
     // variable to track user's current choose
     let tasksForRender;
-
+    //check what a user has chosen
     switch (filter) {
         case "active":
             tasksForRender = tasks.filter(task => !task.isDone);
