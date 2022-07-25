@@ -11,7 +11,8 @@ function App() {
 
     const removeTask = (taskID: number) => {
         // получили новый массив, исключив элемент
-        setTasks(tasks.filter(task => task.id !== taskID));
+        setTasks(tasks.filter(task => task.id !== taskID)); // 10ms
+        // функция useState работает асинхронно. Хук для асинхронный операций useEffect()
         console.log(tasks);
     };
 
