@@ -36,8 +36,8 @@ const TodoList: FC<TodoListPropsType> = (props) => {
             </ul>
             <div>
                 <button onClick={() => props.changeFilter("all")}>All</button>
-                <button onClick={() => props.changeFilter("all")}>Active</button>
-                <button onClick={() => props.changeFilter("all")}>Completed</button>
+                <button onClick={() => props.changeFilter("active")}>Active</button>
+                <button onClick={() => props.changeFilter("completed")}>Completed</button>
             </div>
         </div>
     );
