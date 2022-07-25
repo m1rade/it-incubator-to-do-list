@@ -17,7 +17,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         return (
             <li key={task.id}>
                 <input type="checkbox" checked={task.isDone}/> <span>{task.title}</span>
-                <button onClick={() => props.removeTask()}>Delete</button>
+                <button onClick={() => props.removeTask(task.id)}>Delete</button>
             </li>
         )
     })
