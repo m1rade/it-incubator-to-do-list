@@ -27,12 +27,12 @@ function App() {
         setFilter(filter);
     };
     const addTask = (title: string) => {
-        const newTask: TaskType = {
+        /*const newTask: TaskType = {
             id: v1(),
-            title: title,
+            title, // if key and value have the same name (e.g.: title: title)
             isDone: false,
-        };
-        setTasks([...tasks, newTask]);
+        };*/
+        setTasks([{id: v1(), title, isDone: false,}, ...tasks,]);
     };
 
     /* --------  UI --------- */
@@ -53,7 +53,7 @@ function App() {
     return (
         <>
             <TodoList title={"What to learn"} tasks={tasksForRender} removeTask={removeTask}
-                      changeFilter={changeFilter}/>
+                      changeFilter={changeFilter} addTask={addTask}/>
         </>
     );
 }
