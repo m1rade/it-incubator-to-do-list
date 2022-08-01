@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, FC, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, FC, useState,} from "react";
 import {FilterValuesType} from "./App";
 
 type TodoListPropsType = {
@@ -18,6 +18,7 @@ export type TaskType = {
 const TodoList: FC<TodoListPropsType> = (props) => {
     // Small local state
     const [title, setTitle] = useState<string>("");
+
     const tasksItems = props.tasks.map((task: TaskType) => {
         return (
             <li key={task.id}>
@@ -26,6 +27,11 @@ const TodoList: FC<TodoListPropsType> = (props) => {
             </li>
         );
     });
+
+    const onClickSetFilter = (filter: FilterValuesType) => {
+        return () => props.changeFilter(filter);
+    };
+
     const onClickAddTask = () => {
         if (title) {
             props.addTask(title);
@@ -46,9 +52,9 @@ const TodoList: FC<TodoListPropsType> = (props) => {
                 {tasksItems}
             </ul>
             <div>
-                <button onClick={() => props.changeFilter("all")}>All</button>
-                <button onClick={() => props.changeFilter("active")}>Active</button>
-                <button onClick={() => props.changeFilter("completed")}>Completed</button>
+                <button onClick={onClickSetFilter("all")}>All</button>
+                <button onClick={onClickSetFilter("active")}>Active</button>
+                <button onClick={onClickSetFilter("completed")}>Completed</button>
             </div>
         </div>
     );
