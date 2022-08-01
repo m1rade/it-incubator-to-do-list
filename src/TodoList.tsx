@@ -28,6 +28,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         );
     });
 
+    // const onClickSetFilter = (filter: FilterValuesType) => () => props.changeFilter(filter);
     const onClickSetFilter = (filter: FilterValuesType) => {
         return () => props.changeFilter(filter);
     };
