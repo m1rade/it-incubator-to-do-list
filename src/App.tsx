@@ -1,21 +1,22 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
 import TodoList, {TaskType} from "./TodoList";
+import {v1} from "uuid";
 
 export type FilterValuesType = "all" | "active" | "completed"
 
 function App() {
     const [tasks, setTasks] = React.useState<Array<TaskType>>([
-        {id: 1, title: "HTML", isDone: true},
-        {id: 2, title: "CSS", isDone: true},
-        {id: 3, title: "JS/TS", isDone: false},
+        {id: v1(), title: "HTML", isDone: true},
+        {id: v1(), title: "CSS", isDone: true},
+        {id: v1(), title: "JS/TS", isDone: false},
     ]);
 
     //creating state for buttons that shows what tasks have been done and haven't
     const [filter, setFilter] = React.useState<FilterValuesType>("all");
 
     //update tasks state
-    const removeTask = (taskID: number) => {
+    const removeTask = (taskID: string) => {
         // получили новый массив, исключив элемент
         setTasks(tasks.filter(task => task.id !== taskID)); // 10ms
         // функция useState работает асинхронно. Хук для асинхронный операций useEffect()
@@ -38,11 +39,13 @@ function App() {
             break;
         default:
             tasksForRender = tasks;
-    };
+    }
+    ;
 
     return (
         <>
-            <TodoList title={"What to learn"} tasks={tasksForRender} removeTask={removeTask} changeFilter={changeFilter}/>
+            <TodoList title={"What to learn"} tasks={tasksForRender} removeTask={removeTask}
+                      changeFilter={changeFilter}/>
         </>
     );
 }
