@@ -6,6 +6,7 @@ import {v1} from "uuid";
 export type FilterValuesType = "all" | "active" | "completed"
 
 function App() {
+    /* -------  BLL  --------- */
     const [tasks, setTasks] = React.useState<Array<TaskType>>([
         {id: v1(), title: "HTML", isDone: true},
         {id: v1(), title: "CSS", isDone: true},
@@ -21,12 +22,20 @@ function App() {
         setTasks(tasks.filter(task => task.id !== taskID)); // 10ms
         // функция useState работает асинхронно. Хук для асинхронный операций useEffect()
     };
-
     // update the state of tasks completion
     const changeFilter = (filter: FilterValuesType) => {
         setFilter(filter);
-    }
+    };
+    const addTask = (title: string) => {
+        const newTask: TaskType = {
+            id: v1(),
+            title: title,
+            isDone: false,
+        };
+        setTasks([...tasks, newTask]);
+    };
 
+    /* --------  UI --------- */
     // variable to track user's current choose
     let tasksForRender;
     //check what a user has chosen
@@ -40,7 +49,6 @@ function App() {
         default:
             tasksForRender = tasks;
     }
-    ;
 
     return (
         <>
