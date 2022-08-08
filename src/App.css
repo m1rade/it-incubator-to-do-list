@@ -6,3 +6,15 @@
 .App > div {
   margin-right: 50px;
 }
+
+.isDone {
+  color: rgb(42, 168, 42);
+  font-weight: bold;
+  text-decoration: line-through;
+}
+
+.btn-active {
+  color: wheat;
+  background-color: rgba(42, 168, 42, 0.612);
+  border: 1px solid black; 
+}

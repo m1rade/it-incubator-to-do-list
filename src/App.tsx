@@ -34,6 +34,9 @@ function App() {
         };*/
         setTasks([{id: v1(), title, isDone: false,}, ...tasks,]);
     };
+    const changeTaskStatus = (taskID: string, isDone: boolean) => {
+        setTasks(tasks.map(t => t.id === taskID ? {...t, isDone} : t));
+    }
 
     /* --------  UI --------- */
     // variable to track user's current choose
@@ -52,8 +55,15 @@ function App() {
 
     return (
         <>
-            <TodoList title={"What to learn"} tasks={tasksForRender} removeTask={removeTask}
-                      changeFilter={changeFilter} addTask={addTask}/>
+            <TodoList
+                title={"What to learn"}
+                tasks={tasksForRender}
+                removeTask={removeTask}
+                filter={filter}
+                changeFilter={changeFilter}
+                addTask={addTask}
+                changeTaskStatus={changeTaskStatus}
+            />
         </>
     );
 }

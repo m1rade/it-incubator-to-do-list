@@ -1,19 +1,21 @@
-import React, {ChangeEvent, KeyboardEvent, FC, useState,} from "react";
-import {FilterValuesType} from "./App";
+import React, { ChangeEvent, KeyboardEvent, FC, useState } from "react";
+import { FilterValuesType } from "./App";
 
 type TodoListPropsType = {
-    title: string,
-    tasks: Array<TaskType>
-    removeTask: (taskID: string) => void,
-    changeFilter: (filter: FilterValuesType) => void,
-    addTask: (title: string) => void,
-}
+    title: string;
+    tasks: Array<TaskType>;
+    filter: FilterValuesType;
+    removeTask: (taskID: string) => void;
+    changeFilter: (filter: FilterValuesType) => void;
+    addTask: (title: string) => void;
+    changeTaskStatus: (taskID: string, isDone: boolean) => void;
+};
 
 export type TaskType = {
-    id: string,
-    title: string,
-    isDone: boolean,
-}
+    id: string;
+    title: string;
+    isDone: boolean;
+};
 
 const TodoList: FC<TodoListPropsType> = (props) => {
     // Small local state
@@ -21,9 +23,15 @@ const TodoList: FC<TodoListPropsType> = (props) => {
 
     const tasksItems = props.tasks.map((task: TaskType) => {
         return (
-            <li key={task.id}>
-                <input type="checkbox" checked={task.isDone}/> <span>{task.title}</span>
-                <button onClick={() => props.removeTask(task.id)}>Delete</button>
+            <li key={task.id} className={task.isDone ? "isDone" : ""}>
+                <input onChange={ (e) => props.changeTaskStatus(task.id, e.currentTarget.checked)}
+                type="checkbox"
+                checked={task.isDone}
+                />
+                <span>{task.title}</span>
+                <button onClick={() => props.removeTask(task.id)}>
+                    Delete
+                </button>
             </li>
         );
     });
@@ -39,23 +47,27 @@ const TodoList: FC<TodoListPropsType> = (props) => {
             setTitle("");
         }
     };
-    const inputHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value);
-    const onKeyAddTask = (e: KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && onClickAddTask();
+    const inputHandler = (e: ChangeEvent<HTMLInputElement>) =>
+        setTitle(e.currentTarget.value);
+    const onKeyAddTask = (e: KeyboardEvent<HTMLInputElement>) =>
+        e.key === "Enter" && onClickAddTask();
 
     return (
         <div>
             <h3>{props.title}</h3>
             <div>
-                <input value={title} onChange={inputHandler} onKeyDown={onKeyAddTask}/>
+                <input
+                    value={title}
+                    onChange={inputHandler}
+                    onKeyDown={onKeyAddTask}
+                />
                 <button onClick={onClickAddTask}>+</button>
             </div>
-            <ul>
-                {tasksItems}
-            </ul>
+            <ul>{tasksItems}</ul>
             <div>
-                <button onClick={onClickSetFilter("all")}>All</button>
-                <button onClick={onClickSetFilter("active")}>Active</button>
-                <button onClick={onClickSetFilter("completed")}>Completed</button>
+                <button className={props.filter === "all" ? "btn-active" : ""} onClick={onClickSetFilter("all")}>All</button>
+                <button className={props.filter === "active" ? "btn-active" : ""} onClick={onClickSetFilter("active")}>Active</button>
+                <button className={props.filter === "completed" ? "btn-active" : ""} onClick={onClickSetFilter("completed")}>Completed</button>
             </div>
         </div>
     );
