@@ -56,7 +56,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         error && setError(false);
         setTitle(e.currentTarget.value);
     };
-    
+
     const onKeyAddTask = (e: KeyboardEvent<HTMLInputElement>) =>
         e.key === "Enter" && onClickAddTask(); // e: {key: string}
 
@@ -71,6 +71,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
                     className={error ? "error" : ""}
                 />
                 <button onClick={onClickAddTask}>+</button>
+                {error && <div className={"error_message"}>Title is required</div>}
             </div>
             <ul>{tasksItems}</ul>
             <div>
