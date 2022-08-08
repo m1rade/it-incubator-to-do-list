@@ -22,7 +22,8 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     const [title, setTitle] = useState<string>("");
     const [error, setError] = useState<boolean>(false);
 
-    const tasksItems = props.tasks.map((task: TaskType) => {
+    const tasksItems = props.tasks.length
+    ? props.tasks.map((task: TaskType) => {
         return (
             <li key={task.id} className={task.isDone ? "isDone" : ""}>
                 <input onChange={ (e) => props.changeTaskStatus(task.id, e.currentTarget.checked)}
@@ -35,7 +36,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
                 </button>
             </li>
         );
-    });
+    }) : <span>Task list is empty</span>
 
     // const onClickSetFilter = (filter: FilterValuesType) => () => props.changeFilter(filter);
     const onClickSetFilter = (filter: FilterValuesType) => {
