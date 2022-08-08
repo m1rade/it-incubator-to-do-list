@@ -18,3 +18,8 @@
   background-color: rgba(42, 168, 42, 0.612);
   border: 1px solid black; 
 }
+
+.error {
+  outline: none;
+  border: 2px solid red;
+}

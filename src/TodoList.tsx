@@ -20,6 +20,7 @@ export type TaskType = {
 const TodoList: FC<TodoListPropsType> = (props) => {
     // Small local state
     const [title, setTitle] = useState<string>("");
+    const [error, setError] = useState<boolean>(false);
 
     const tasksItems = props.tasks.map((task: TaskType) => {
         return (
@@ -42,15 +43,22 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     };
 
     const onClickAddTask = () => {
-        if (title) {
+        const trimmedTitle = title.trim();
+        if (trimmedTitle) {
             props.addTask(title);
             setTitle("");
+        } else {
+            setError(true);
         }
     };
-    const inputHandler = (e: ChangeEvent<HTMLInputElement>) =>
+
+    const inputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        error && setError(false);
         setTitle(e.currentTarget.value);
+    };
+    
     const onKeyAddTask = (e: KeyboardEvent<HTMLInputElement>) =>
-        e.key === "Enter" && onClickAddTask();
+        e.key === "Enter" && onClickAddTask(); // e: {key: string}
 
     return (
         <div>
@@ -60,6 +68,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
                     value={title}
                     onChange={inputHandler}
                     onKeyDown={onKeyAddTask}
+                    className={error ? "error" : ""}
                 />
                 <button onClick={onClickAddTask}>+</button>
             </div>
