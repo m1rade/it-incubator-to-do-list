@@ -62,7 +62,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         e.key === "Enter" && onClickAddTask(); // e: {key: string}
 
     return (
-        <div>
+        <div className="App">
             <h3>{props.title}</h3>
             <div>
                 <input
