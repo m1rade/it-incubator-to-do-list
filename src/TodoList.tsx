@@ -46,7 +46,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     const onClickAddTask = () => {
         const trimmedTitle = title.trim();
         if (trimmedTitle) {
-            props.addTask(trimmedTitle);
+            props.addTask(title);
             setTitle("");
         } else {
             setError(true);
