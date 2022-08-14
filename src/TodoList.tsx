@@ -29,7 +29,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
                 <input onChange={ (e) => props.changeTaskStatus(task.id, e.currentTarget.checked)}
                 type="checkbox"
                 checked={task.isDone}
-                />
+                />{" "}
                 <span>{task.title}</span>
                 <button onClick={() => props.removeTask(task.id)}>
                     Delete
