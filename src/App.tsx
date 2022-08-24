@@ -59,36 +59,38 @@ function App() {
         delete tasks[todolistID];
     }
 
+    const mappedTodoLists = todolists.map((el) => {
+        let tasksForTodolist: Array<TaskType>;
+        switch (el.filter) {
+            case "active":
+                tasksForTodolist = tasks[el.id].filter((t) => !t.isDone);
+                break;
+            case "completed":
+                tasksForTodolist = tasks[el.id].filter((t) => t.isDone);
+                break;
+            default:
+                tasksForTodolist = tasks[el.id];
+        }
+
+        return (
+            <Todolist
+                key={el.id}
+                todolistID={el.id}
+                title={el.title}
+                tasks={tasksForTodolist}
+                removeTask={removeTask}
+                changeFilter={changeFilter}
+                addTask={addTask}
+                changeTaskStatus={changeStatus}
+                filter={el.filter}
+                removeTodolist={removeTodolist}
+            />
+        );
+    });
+
     return (
         <div className="App">
-            {todolists.map((el) => {
-                let tasksForTodolist: Array<TaskType>;
-                switch (el.filter) {
-                    case "active":
-                        tasksForTodolist = tasks[el.id].filter((t) => !t.isDone);
-                        break;
-                    case "completed":
-                        tasksForTodolist = tasks[el.id].filter((t) => t.isDone);
-                        break;
-                    default:
-                        tasksForTodolist = tasks[el.id];
-                }
-
-                return (
-                    <Todolist
-                        key={el.id}
-                        todolistID={el.id}
-                        title={el.title}
-                        tasks={tasksForTodolist}
-                        removeTask={removeTask}
-                        changeFilter={changeFilter}
-                        addTask={addTask}
-                        changeTaskStatus={changeStatus}
-                        filter={el.filter}
-                        removeTodolist={removeTodolist}
-                    />
-                );
-            })}
+            {mappedTodoLists.length !== 0 ? mappedTodoLists : <div>EMPTY</div>}
         </div>
     );
 }
