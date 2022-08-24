@@ -52,6 +52,21 @@ export function Todolist(props: PropsType) {
         props.removeTodolist(props.todolistID);
     }
 
+    const mappedTasks = props.tasks.map(t => {
+        const onClickHandler = () => props.removeTask(props.todolistID, t.id)
+        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+            props.changeTaskStatus(props.todolistID, t.id, e.currentTarget.checked);
+        }
+
+        return <li key={t.id} className={t.isDone ? "is-done" : ""}>
+            <input type="checkbox"
+                   onChange={onChangeHandler}
+                   checked={t.isDone}/>
+            <span>{t.title}</span>
+            <button onClick={onClickHandler}>x</button>
+        </li>
+    });
+
     return <div>
         <h3>{props.title}
             <button onClick={removeTodolistHandler}>Delete</button>
@@ -66,22 +81,7 @@ export function Todolist(props: PropsType) {
             {error && <div className="error-message">{error}</div>}
         </div>
         <ul>
-            {
-                props.tasks.map(t => {
-                    const onClickHandler = () => props.removeTask(props.todolistID, t.id)
-                    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        props.changeTaskStatus(props.todolistID, t.id, e.currentTarget.checked);
-                    }
-
-                    return <li key={t.id} className={t.isDone ? "is-done" : ""}>
-                        <input type="checkbox"
-                               onChange={onChangeHandler}
-                               checked={t.isDone}/>
-                        <span>{t.title}</span>
-                        <button onClick={onClickHandler}>x</button>
-                    </li>
-                })
-            }
+            {mappedTasks.length !== 0 ? mappedTasks : <div>Empty todo list</div>}
         </ul>
         <div>
             <button className={props.filter === "all" ? "active-filter" : ""}
