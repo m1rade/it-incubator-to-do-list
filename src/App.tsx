@@ -59,6 +59,17 @@ function App() {
         delete tasks[todolistID];
     }
 
+    const addTodolist = (title: string) => {
+        const newTodolistID = v1();
+        const newTodolist: TodolistsType = {
+            id: newTodolistID,
+            title: title,
+            filter: "all"
+        };
+        setTodolists([...todolists, newTodolist]);
+        setTasks({...tasks, [newTodolistID]: []});
+    }
+
     const mappedTodoLists = todolists.map((el) => {
         let tasksForTodolist: Array<TaskType>;
         switch (el.filter) {
