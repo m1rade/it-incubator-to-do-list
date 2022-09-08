@@ -62,7 +62,7 @@ export function Todolist(props: PropsType) {
     const changeTodolistTitle = (title: string) => props.changeTodolistTitle(props.todolistID, title);
 
     return <div>
-        <h3>
+        <h3 className="editableSpan">
             <EditableSpan title={props.title} changeTitle={changeTodolistTitle}/>
             <IconButton aria-label="delete" onClick={removeTodolistHandler}>
                 <DeleteSweepOutlinedIcon/>
@@ -74,13 +74,13 @@ export function Todolist(props: PropsType) {
         </ul>
         <div>
             <Button variant={props.filter === "all" ? "contained" : "outlined"}
-                    onClick={onAllClickHandler} color="warning">All
+                    onClick={onAllClickHandler} color="warning" size="small" sx={{marginRight: "10px"}}>All
             </Button>
             <Button variant={props.filter === "active" ? "contained" : "outlined"}
-                    onClick={onActiveClickHandler} color="warning">Active
+                    onClick={onActiveClickHandler} color="warning" size="small" sx={{marginRight: "10px"}}>Active
             </Button>
             <Button variant={props.filter === "completed" ? "contained" : "outlined"}
-                    onClick={onCompletedClickHandler} color="warning">Completed
+                    onClick={onCompletedClickHandler} color="warning" size="small" sx={{marginRight: "10px"}}>Completed
             </Button>
         </div>
     </div>
