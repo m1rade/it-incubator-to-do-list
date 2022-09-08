@@ -4,6 +4,7 @@ import {v1} from "uuid";
 import {TaskType, Todolist} from "./Todolist";
 import AddItemForm from "./components/AddItemForm";
 import ButtonAppBar from "./components/ButtonAppBar";
+import {Container, Grid, Paper} from "@mui/material";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -92,30 +93,41 @@ function App() {
             default:
                 tasksForTodolist = tasks[el.id];
         }
-
         return (
-            <Todolist
-                key={el.id}
-                todolistID={el.id}
-                title={el.title}
-                tasks={tasksForTodolist}
-                removeTask={removeTask}
-                changeFilter={changeFilter}
-                addTask={addTask}
-                changeTaskStatus={changeTaskStatus}
-                filter={el.filter}
-                removeTodolist={removeTodolist}
-                changeTodolistTitle={changeTodolistTitle}
-                changeTaskTitle={changeTaskTitle}
-            />
+            <Grid key={el.id} item xs={4}>
+                <Paper elevation={4} style={{padding: "15px"}}>
+                    <Todolist
+                        key={el.id}
+                        todolistID={el.id}
+                        title={el.title}
+                        tasks={tasksForTodolist}
+                        removeTask={removeTask}
+                        changeFilter={changeFilter}
+                        addTask={addTask}
+                        changeTaskStatus={changeTaskStatus}
+                        filter={el.filter}
+                        removeTodolist={removeTodolist}
+                        changeTodolistTitle={changeTodolistTitle}
+                        changeTaskTitle={changeTaskTitle}
+                    />
+                </Paper>
+            </Grid>
         );
     });
 
     return (
         <div className="App">
             <ButtonAppBar/>
-            <AddItemForm addItem={addTodolist}/>
-            {mappedTodoLists.length !== 0 ? mappedTodoLists : <div>EMPTY</div>}
+            <Container fixed>
+                <Grid justifyContent="center" container style={{padding: "30px"}}>
+                    <Grid item>
+                        <AddItemForm addItem={addTodolist}/>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={4}>
+                    {mappedTodoLists.length !== 0 ? mappedTodoLists : <div>EMPTY</div>}
+                </Grid>
+            </Container>
         </div>
     );
 }
