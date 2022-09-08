@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button} from "@mui/material";
+import {IconButton, TextField} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
@@ -7,7 +8,7 @@ type AddItemFormPropsType = {
 
 const AddItemForm = (props: AddItemFormPropsType) => {
     let [title, setTitle] = useState("");
-    let [error, setError] = useState<string | null>(null);
+    let [error, setError] = useState<boolean>(false);
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
@@ -18,12 +19,12 @@ const AddItemForm = (props: AddItemFormPropsType) => {
             props.addItem(title.trim());
             setTitle("");
         } else {
-            setError("Title is required");
+            setError(true);
         }
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null);
+        setError(false);
         if (e.key === "Enter") {
             addItem();
         }
@@ -31,14 +32,19 @@ const AddItemForm = (props: AddItemFormPropsType) => {
 
     return (
         <div>
-            <input value={title}
-                   onChange={onChangeHandler}
-                   onKeyDown={onKeyPressHandler}
-                   className={error ? "error" : ""}
+            <TextField id="outlined-basic"
+                       label={error ? "Title is required" : "Type a title"}
+                       variant="outlined"
+                       color="warning"
+                       size="small"
+                       value={title}
+                       error={error}
+                       onChange={onChangeHandler}
+                       onKeyDown={onKeyPressHandler}
             />
-            <Button style={{maxWidth: "30px", maxHeight: "30px", minWidth: "30px", minHeight: "30px"}} onClick={addItem}
-                    variant="contained">+</Button>
-            {error && <div className="error-message">{error}</div>}
+            <IconButton aria-label="add" onClick={addItem} color="warning">
+                <AddIcon/>
+            </IconButton>
         </div>
     );
 };

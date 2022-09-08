@@ -2,6 +2,10 @@ import React, {ChangeEvent} from "react";
 import {FilterValuesType} from "./App";
 import AddItemForm from "./components/AddItemForm";
 import EditableSpan from "./components/EditableSpan";
+import {Button, Checkbox, IconButton} from "@mui/material";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
+import {deepOrange} from "@mui/material/colors";
 
 export type TaskType = {
     id: string
@@ -34,18 +38,22 @@ export function Todolist(props: PropsType) {
     }
 
     const mappedTasks = props.tasks.map(t => {
-        const onClickHandler = () => props.removeTask(props.todolistID, t.id)
+        const onClickRemoveTask = () => props.removeTask(props.todolistID, t.id)
         const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
             props.changeTaskStatus(props.todolistID, t.id, e.currentTarget.checked);
         }
         const changeTaskTitle = (title: string) => props.changeTaskTitle(props.todolistID, t.id, title);
 
         return <li key={t.id} className={t.isDone ? "is-done" : ""}>
-            <input type="checkbox"
-                   onChange={onChangeHandler}
-                   checked={t.isDone}/>
+            <Checkbox
+                sx={{color: deepOrange[800], "&.Mui-checked": {color: deepOrange[600],},}}
+                onChange={onChangeHandler}
+                checked={t.isDone}
+            />
             <EditableSpan title={t.title} changeTitle={changeTaskTitle}/>
-            <button onClick={onClickHandler}>x</button>
+            <IconButton aria-label="delete" onClick={onClickRemoveTask}>
+                <DeleteOutlinedIcon/>
+            </IconButton>
         </li>
     });
 
@@ -56,22 +64,24 @@ export function Todolist(props: PropsType) {
     return <div>
         <h3>
             <EditableSpan title={props.title} changeTitle={changeTodolistTitle}/>
-            <button onClick={removeTodolistHandler}>Delete</button>
+            <IconButton aria-label="delete" onClick={removeTodolistHandler}>
+                <DeleteSweepOutlinedIcon/>
+            </IconButton>
         </h3>
         <AddItemForm addItem={addTask}/>
-        <ul>
+        <ul className="tasks">
             {mappedTasks.length !== 0 ? mappedTasks : <div>Empty todo list</div>}
         </ul>
         <div>
-            <button className={props.filter === "all" ? "active-filter" : ""}
-                    onClick={onAllClickHandler}>All
-            </button>
-            <button className={props.filter === "active" ? "active-filter" : ""}
-                    onClick={onActiveClickHandler}>Active
-            </button>
-            <button className={props.filter === "completed" ? "active-filter" : ""}
-                    onClick={onCompletedClickHandler}>Completed
-            </button>
+            <Button variant={props.filter === "all" ? "contained" : "outlined"}
+                    onClick={onAllClickHandler} color="warning">All
+            </Button>
+            <Button variant={props.filter === "active" ? "contained" : "outlined"}
+                    onClick={onActiveClickHandler} color="warning">Active
+            </Button>
+            <Button variant={props.filter === "completed" ? "contained" : "outlined"}
+                    onClick={onCompletedClickHandler} color="warning">Completed
+            </Button>
         </div>
     </div>
 }

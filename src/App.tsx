@@ -3,6 +3,7 @@ import "./App.css";
 import {v1} from "uuid";
 import {TaskType, Todolist} from "./Todolist";
 import AddItemForm from "./components/AddItemForm";
+import ButtonAppBar from "./components/ButtonAppBar";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
@@ -30,11 +31,11 @@ function App() {
             {id: v1(), title: "GraphQL", isDone: false}
         ],
         [todolistID2]: [
-            {id: v1(), title: "HTML&CSS 2", isDone: true},
-            {id: v1(), title: "JS 2", isDone: true},
-            {id: v1(), title: "ReactJS 2", isDone: false},
-            {id: v1(), title: "Rest API 2", isDone: false},
-            {id: v1(), title: "GraphQL 2", isDone: false}
+            {id: v1(), title: "Bread", isDone: true},
+            {id: v1(), title: "Books", isDone: true},
+            {id: v1(), title: "Tea", isDone: false},
+            {id: v1(), title: "MacBook Pro", isDone: false},
+            {id: v1(), title: "Coffee", isDone: false}
         ]
     });
 
@@ -112,6 +113,7 @@ function App() {
 
     return (
         <div className="App">
+            <ButtonAppBar/>
             <AddItemForm addItem={addTodolist}/>
             {mappedTodoLists.length !== 0 ? mappedTodoLists : <div>EMPTY</div>}
         </div>
