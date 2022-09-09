@@ -5,7 +5,13 @@ import {TaskType, Todolist} from "./Todolist";
 import AddItemForm from "./components/AddItemForm";
 import ButtonAppBar from "./components/ButtonAppBar";
 import {Container, Grid, Paper} from "@mui/material";
-import { addTodoListAC, changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC, todoLists_reducer } from "./reducers/todoLists_reducer";
+import {
+    addTodoListAC,
+    changeTodoListFilterAC,
+    changeTodoListTitleAC,
+    removeTodoListAC,
+    todoLists_reducer
+} from "./reducers/todoLists_reducer";
 
 export type FilterValuesType = "all" | "active" | "completed";
 
