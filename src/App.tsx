@@ -82,7 +82,9 @@ function App() {
     }
 
     function removeTodoList(todoListID: string) {
-        dispatchTodoLists(removeTodoListAC(todoListID));
+        const action = removeTodoListAC(todoListID);
+        dispatchTodoLists(action);
+        dispatchTasks(action);
         // delete tasks[todoListID];
     }
 
@@ -95,7 +97,9 @@ function App() {
         // };
         // setTodolists([...todoLists, newTodolist]);
         // setTasks({...tasks, [newTodolistID]: []});
-        dispatchTodoLists(addTodoListAC(title));
+        const action = addTodoListAC(title);
+        dispatchTodoLists(action);
+        dispatchTasks(action);
     }
 
     const mappedTodoLists = todoLists.map((el) => {
