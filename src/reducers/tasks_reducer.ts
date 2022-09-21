@@ -77,6 +77,7 @@ export const tasks_reducer = (state: TasksStateType, action: ActionType): TasksS
             const stateCopy = {...state};
             delete stateCopy[action.payload.todoListID];
             return stateCopy;
+        // const {[action.payload.todoListID]: [], ...rest} = {...state};
         default:
             return {...state};
     }
