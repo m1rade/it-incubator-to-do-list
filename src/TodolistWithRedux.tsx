@@ -1,16 +1,15 @@
-import React, { ChangeEvent } from "react";
+import React, {memo, useCallback} from "react";
 import AddItemForm from "./components/AddItemForm";
 import EditableSpan from "./components/EditableSpan";
-import { Button, Checkbox, IconButton } from "@mui/material";
-import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import {Button, IconButton} from "@mui/material";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
-import { deepOrange } from "@mui/material/colors";
-import { useSelector } from "react-redux";
-import { AppRootStateType } from "./state/store";
-import { useDispatch } from "react-redux";
-import { addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC } from "./state/tasks_reducer";
-import { TodoListsType } from "./AppWithRedux";
-import { changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC } from "./state/todoLists_reducer";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "./state/store";
+import {useDispatch} from "react-redux";
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks_reducer";
+import {TodoListsType} from "./AppWithRedux";
+import {changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC} from "./state/todoLists_reducer";
+import {Task} from "./Task";
 
 export type TaskType = {
     id: string;
@@ -22,20 +21,21 @@ type PropsType = {
     todoList: TodoListsType
 };
 
-export function TodolistWithRedux({todoList}: PropsType) {
+export const TodolistWithRedux = memo(({todoList}: PropsType) => {
+    console.log("TodoList")
     const tasks = useSelector<AppRootStateType, TaskType[]>((state) => state.tasks[todoList.id]);
     const dispatch = useDispatch();
 
 
-    function addTask(title: string) {
+    const addTask = useCallback((title: string) => {
         dispatch(addTaskAC(todoList.id, title));
-    }
+    }, [dispatch, todoList.id]);
 
-    const onAllClickHandler = () => dispatch(changeTodoListFilterAC(todoList.id, "all"));
-    const onActiveClickHandler = () => dispatch(changeTodoListFilterAC(todoList.id, "active"));
-    const onCompletedClickHandler = () => dispatch(changeTodoListFilterAC(todoList.id, "completed"));
+    const onAllClickHandler = useCallback(() => dispatch(changeTodoListFilterAC(todoList.id, "all")), [dispatch, todoList.id]);
+    const onActiveClickHandler = useCallback(() => dispatch(changeTodoListFilterAC(todoList.id, "active")), [dispatch, todoList.id]);
+    const onCompletedClickHandler = useCallback(() => dispatch(changeTodoListFilterAC(todoList.id, "completed")), [dispatch, todoList.id]);
 
-    const removeTodolistHandler = () => dispatch(removeTodoListAC(todoList.id));
+    const removeTodolistHandler = useCallback(() => dispatch(removeTodoListAC(todoList.id)), [dispatch, todoList.id]);
 
     let tasksForTodoList: Array<TaskType>;
     switch (todoList.filter) {
@@ -50,33 +50,18 @@ export function TodolistWithRedux({todoList}: PropsType) {
     }
 
     const mappedTasks = tasksForTodoList.map((t) => {
-        const onClickRemoveTask = () =>
-            dispatch(removeTaskAC(todoList.id, t.id));
-        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            dispatch(changeTaskStatusAC(todoList.id, t.id, e.currentTarget.checked));
-        };
-        const changeTaskTitle = (title: string) =>
-            dispatch(changeTaskTitleAC(todoList.id, t.id, title));
+        const removeTask = (taskID: string) => dispatch(removeTaskAC(todoList.id, taskID));
+        const changeTaskStatus = (taskID: string, isDone: boolean) => dispatch(changeTaskStatusAC(todoList.id, taskID, isDone));
+        const changeTaskTitle = (taskID: string, title: string) => dispatch(changeTaskTitleAC(todoList.id, taskID, title));
 
-        return (
-            <li key={t.id} className={t.isDone ? "is-done" : ""}>
-                <Checkbox
-                    sx={{
-                        color: deepOrange[800],
-                        "&.Mui-checked": { color: deepOrange[600] },
-                    }}
-                    onChange={onChangeHandler}
-                    checked={t.isDone}
-                />
-                <EditableSpan title={t.title} changeTitle={changeTaskTitle} />
-                <IconButton aria-label="delete" onClick={onClickRemoveTask}>
-                    <DeleteOutlinedIcon />
-                </IconButton>
-            </li>
-        );
+        return <Task key={t.id}
+                     task={t}
+                     changeTaskStatus={changeTaskStatus}
+                     changeTaskTitle={changeTaskTitle}
+                     removeTask={removeTask}/>
     });
 
-    const changeTodolistTitle = (title: string) => dispatch(changeTodoListTitleAC(todoList.id, title));
+    const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodoListTitleAC(todoList.id, title)), [dispatch, todoList.id]);
 
     return (
         <div>
@@ -86,10 +71,10 @@ export function TodolistWithRedux({todoList}: PropsType) {
                     changeTitle={changeTodolistTitle}
                 />
                 <IconButton aria-label="delete" onClick={removeTodolistHandler}>
-                    <DeleteSweepOutlinedIcon />
+                    <DeleteSweepOutlinedIcon/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addTask} />
+            <AddItemForm addItem={addTask}/>
             <ul className="tasks">
                 {mappedTasks.length !== 0 ? mappedTasks : <div>Empty</div>}
             </ul>
@@ -99,7 +84,7 @@ export function TodolistWithRedux({todoList}: PropsType) {
                     onClick={onAllClickHandler}
                     color="warning"
                     size="small"
-                    sx={{ marginRight: "10px" }}>
+                    sx={{marginRight: "10px"}}>
                     All
                 </Button>
                 <Button
@@ -109,7 +94,7 @@ export function TodolistWithRedux({todoList}: PropsType) {
                     onClick={onActiveClickHandler}
                     color="warning"
                     size="small"
-                    sx={{ marginRight: "10px" }}>
+                    sx={{marginRight: "10px"}}>
                     Active
                 </Button>
                 <Button
@@ -119,10 +104,10 @@ export function TodolistWithRedux({todoList}: PropsType) {
                     onClick={onCompletedClickHandler}
                     color="warning"
                     size="small"
-                    sx={{ marginRight: "10px" }}>
+                    sx={{marginRight: "10px"}}>
                     Completed
                 </Button>
             </div>
         </div>
     );
-}
+});
