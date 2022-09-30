@@ -1,22 +1,24 @@
-import React, {ChangeEvent, memo, useCallback} from "react";
+import React, {ChangeEvent, memo} from "react";
+import {TaskType} from "./TodolistWithRedux";
 import {Checkbox, IconButton} from "@mui/material";
 import {deepOrange} from "@mui/material/colors";
 import EditableSpan from "./components/EditableSpan";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import {TaskType} from "./TodolistWithRedux";
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks_reducer";
+import {useDispatch} from "react-redux";
 
-export type TaskPropsType = {
+
+export type TaskWithReduxPropsType = {
+    todoListID: string,
     task: TaskType,
-    changeTaskStatus: (taskID: string, isDone: boolean) => void,
-    changeTaskTitle: (taskID: string, title: string) => void,
-    removeTask: (taskID: string) => void
 }
 
-export const Task = memo(({task, changeTaskStatus, changeTaskTitle, removeTask}: TaskPropsType) => {
-    console.log("Task")
-    const onClickRemoveTask = () => removeTask(task.id);
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => changeTaskStatus(task.id, e.currentTarget.checked);
-    const changeTitle = useCallback((title: string) => changeTaskTitle(task.id, title), [changeTaskTitle, task.id]);
+export const TaskWithRedux = memo(({todoListID, task}: TaskWithReduxPropsType) => {
+    const dispatch = useDispatch();
+
+    const onClickRemoveTask = () => dispatch(removeTaskAC(todoListID, task.id));
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => dispatch(changeTaskStatusAC(todoListID, task.id, e.currentTarget.checked));
+    const changeTitle = (title: string) => dispatch(changeTaskTitleAC(todoListID, task.id, title));
 
     return (
         <li className={task.isDone ? "is-done" : ""}>
@@ -35,3 +37,4 @@ export const Task = memo(({task, changeTaskStatus, changeTaskTitle, removeTask}:
         </li>
     );
 });
+

@@ -6,10 +6,10 @@ import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {useDispatch} from "react-redux";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks_reducer";
+import {addTaskAC} from "./state/tasks_reducer";
 import {TodoListsType} from "./AppWithRedux";
 import {changeTodoListFilterAC, changeTodoListTitleAC, removeTodoListAC} from "./state/todoLists_reducer";
-import {Task} from "./Task";
+import {TaskWithRedux} from "./TaskWithRedux";
 
 export type TaskType = {
     id: string;
@@ -37,6 +37,8 @@ export const TodolistWithRedux = memo(({todoList}: PropsType) => {
 
     const removeTodolistHandler = useCallback(() => dispatch(removeTodoListAC(todoList.id)), [dispatch, todoList.id]);
 
+    const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodoListTitleAC(todoList.id, title)), [dispatch, todoList.id]);
+
     let tasksForTodoList: Array<TaskType>;
     switch (todoList.filter) {
         case "active":
@@ -50,18 +52,9 @@ export const TodolistWithRedux = memo(({todoList}: PropsType) => {
     }
 
     const mappedTasks = tasksForTodoList.map((t) => {
-        const removeTask = (taskID: string) => dispatch(removeTaskAC(todoList.id, taskID));
-        const changeTaskStatus = (taskID: string, isDone: boolean) => dispatch(changeTaskStatusAC(todoList.id, taskID, isDone));
-        const changeTaskTitle = (taskID: string, title: string) => dispatch(changeTaskTitleAC(todoList.id, taskID, title));
-
-        return <Task key={t.id}
-                     task={t}
-                     changeTaskStatus={changeTaskStatus}
-                     changeTaskTitle={changeTaskTitle}
-                     removeTask={removeTask}/>
+        return <TaskWithRedux key={t.id} todoListID={todoList.id} task={t}/>
     });
 
-    const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodoListTitleAC(todoList.id, title)), [dispatch, todoList.id]);
 
     return (
         <div>
