@@ -4,13 +4,12 @@ import {combineReducers, legacy_createStore} from "redux";
 import {v1} from "uuid";
 import {todoLists_reducer} from "./todoLists_reducer";
 import {tasks_reducer} from "./tasks_reducer";
+import {AppRootStateType} from "./store";
 
 const rootReducer = combineReducers({
     todoLists: todoLists_reducer,
     tasks: tasks_reducer
 });
-
-export type StorybookRootStateType = ReturnType<typeof rootReducer>
 
 const initialGlobalState = {
     todoLists: [
@@ -29,7 +28,7 @@ const initialGlobalState = {
     }
 }
 
-export const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as StorybookRootStateType)
+export const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as AppRootStateType)
 
 export const ReduxStoreProviderDecorator = (storyFunc: () => JSX.Element) => {
     return <Provider store={storyBookStore}>{storyFunc()}</Provider>
