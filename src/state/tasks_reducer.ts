@@ -1,6 +1,6 @@
 import {v1} from "uuid";
-import {AddTodoListACType, RemoveTodolistACType, todolistID1, todolistID2} from "./todoLists_reducer";
-import { TaskType } from "../TodolistWithRedux";
+import {AddTodoListACType, RemoveTodolistACType} from "./todoLists_reducer";
+import {TaskType} from "../TodolistWithRedux";
 
 export type RemoveTaskActionType = {
     type: "REMOVE-TASK",
@@ -49,20 +49,21 @@ type TasksStateType = {
 };
 
 const initialState: TasksStateType = {
-    [todolistID1]: [
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Rest API", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false}
-    ],
-    [todolistID2]: [
-        {id: v1(), title: "Bread", isDone: true},
-        {id: v1(), title: "Books", isDone: true},
-        {id: v1(), title: "Tea", isDone: false},
-        {id: v1(), title: "MacBook Pro", isDone: false},
-        {id: v1(), title: "Coffee", isDone: false}
-    ]
+    /*    [todolistID1]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false}
+        ],
+        [todolistID2]: [
+            {id: v1(), title: "Bread", isDone: true},
+            {id: v1(), title: "Books", isDone: true},
+            {id: v1(), title: "Tea", isDone: false},
+            {id: v1(), title: "MacBook Pro", isDone: false},
+            {id: v1(), title: "Coffee", isDone: false}
+        ]*/
+    count: []
 };
 
 export const tasks_reducer = (state: TasksStateType = initialState, action: ActionType): TasksStateType => {
