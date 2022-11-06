@@ -4,12 +4,12 @@ import {combineReducers, legacy_createStore} from "redux";
 import {v1} from "uuid";
 import {todoLists_reducer} from "./todoLists_reducer";
 import {tasks_reducer} from "./tasks_reducer";
-import {AppRootStateType} from "./store";
 
 const rootReducer = combineReducers({
     todoLists: todoLists_reducer,
     tasks: tasks_reducer
 });
+export type AppRootStateType = ReturnType<typeof rootReducer>;
 
 const initialGlobalState = {
     todoLists: [
