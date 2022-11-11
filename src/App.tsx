@@ -9,12 +9,11 @@ import {addTaskTC, deleteTaskTC, TasksStateType, updateTaskTC} from "./state/tas
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppRootStateType} from "./state/store";
 import {
-    addTodoListAC,
+    addTodoTC,
     changeTodoListFilterAC,
-    changeTodoListTitleAC,
+    changeTodoListTitleAC, deleteTodoTC,
     fetchTodoTC,
     FilterValuesType,
-    removeTodoListAC,
     TodolistDomainType
 } from "./state/todoLists_reducer";
 import ButtonAppBar from "./components/ButtonAppBar";
@@ -51,11 +50,11 @@ function App() {
     }, [dispatch]);
 
     const removeTodoList = useCallback((todoListID: string) => {
-        dispatch(removeTodoListAC(todoListID));
+        dispatch(deleteTodoTC(todoListID));
     }, [dispatch]);
 
     const addTodoList = useCallback((title: string) => {
-        dispatch(addTodoListAC(title));
+        dispatch(addTodoTC(title));
     }, [dispatch]);
 
     useEffect(() => {

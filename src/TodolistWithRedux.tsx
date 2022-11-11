@@ -8,9 +8,7 @@ import {AppDispatch, AppRootStateType} from "./state/store";
 import {useDispatch} from "react-redux";
 import {addTaskTC, fetchTasksTC} from "./state/tasks_reducer";
 import {
-    changeTodoListFilterAC,
-    changeTodoListTitleAC, FilterValuesType,
-    removeTodoListAC,
+    changeTodoListFilterAC, changeTodoTitleTC, deleteTodoTC, FilterValuesType,
     TodolistDomainType
 } from "./state/todoLists_reducer";
 import {TaskWithRedux} from "./TaskWithRedux";
@@ -35,9 +33,9 @@ export const TodolistWithRedux = memo(({todoList}: PropsType) => {
         dispatch(changeTodoListFilterAC(todoList.id, value));
     }, [dispatch, todoList.id]);
 
-    const removeTodolistHandler = useCallback(() => dispatch(removeTodoListAC(todoList.id)), [dispatch, todoList.id]);
+    const removeTodolistHandler = useCallback(() => dispatch(deleteTodoTC(todoList.id)), [dispatch, todoList.id]);
 
-    const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodoListTitleAC(todoList.id, title)), [dispatch, todoList.id]);
+    const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodoTitleTC(todoList.id, title)), [dispatch, todoList.id]);
 
     let tasksForTodoList;
     switch (todoList.filter) {
