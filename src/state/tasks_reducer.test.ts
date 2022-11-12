@@ -1,4 +1,4 @@
-import {TasksStateType} from "../App";
+import {TasksStateType} from "../misc/App_old";
 import {
     addTaskAC,
     changeTaskStatusAC,

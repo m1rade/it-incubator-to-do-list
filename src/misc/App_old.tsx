@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect} from "react";
-import "./App.css";
-import {Todolist} from "./Todolist";
-import AddItemForm from "./components/AddItemForm";
+import "../app/App.css";
+import {Todolist_old} from "./Todolist_old";
+import AddItemForm from "../components/AddItemForm/AddItemForm";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import {addTaskTC, deleteTaskTC, TasksStateType, updateTaskTC} from "./state/tasks_reducer";
+import {addTaskTC, deleteTaskTC, TasksStateType, updateTaskTC} from "../state/tasks_reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppRootStateType} from "./state/store";
+import {AppDispatch, AppRootStateType} from "../state/store";
 import {
     addTodoTC,
     changeTodoListFilterAC,
@@ -15,12 +15,12 @@ import {
     fetchTodoTC,
     FilterValuesType,
     TodolistDomainType
-} from "./state/todoLists_reducer";
-import ButtonAppBar from "./components/ButtonAppBar";
-import {TaskStatuses} from "./api/todolist-api";
+} from "../state/todoLists_reducer";
+import ButtonAppBar from "../components/ButtonAppBar/ButtonAppBar";
+import {TaskStatuses} from "../api/todolist-api";
 
 
-function App() {
+function App_old() {
     const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>(state => state.todoList)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch<AppDispatch>();
@@ -76,7 +76,7 @@ function App() {
         return (
             <Grid key={el.id} item xs={4}>
                 <Paper elevation={4} style={{padding: "15px"}}>
-                    <Todolist
+                    <Todolist_old
                         key={el.id}
                         id={el.id}
                         title={el.title}
@@ -112,4 +112,4 @@ function App() {
     );
 }
 
-export default App;
+export default App_old;

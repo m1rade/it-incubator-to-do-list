@@ -4,48 +4,39 @@ import {Dispatch} from "redux";
 import {AppRootStateType} from "./store";
 
 
-export type TasksActionType =
-    RemoveTaskACType
-    | AddTaskACType
-    | UpdateTaskACType
-    | AddTodoListACType
-    | RemoveTodolistACType
-    | SetTasksACType
-    | SetTodolistsACType
-
-export type TasksStateType = {
-    [key: string]: TaskType[];
-};
-
-
 const initialState: TasksStateType = {};
 
+// Reducer
 export const tasks_reducer = (
     state: TasksStateType = initialState,
     action: TasksActionType
 ): TasksStateType => {
     switch (action.type) {
-        case "SET-TASKS": {
+        case "SET-TASKS":
             return {...state, [action.payload.todolistID]: action.payload.tasks}
-        }
-        case "SET-TODOS": {
+        case "SET-TODOS":
             let copyState = {...state};
             action.todos.forEach(t => {
                 copyState[t.id] = [];
             });
             return copyState;
-        }
         case "REMOVE-TASK":
             return {
                 ...state,
                 [action.payload.todolistID]: state[action.payload.todolistID].filter(t => t.id !== action.payload.taskID)
             };
         case "ADD-TASK":
-            return {...state, [action.payload.todolistID]: [action.payload.task, ...state[action.payload.todolistID]]};
+            return {
+                ...state,
+                [action.payload.todolistID]: [action.payload.task, ...state[action.payload.todolistID]]
+            };
         case "UPDATE-TASK":
             return {
                 ...state,
-                [action.payload.todolistID]: state[action.payload.todolistID].map(t => t.id === action.payload.taskID ? {...t, ...action.payload.task} : t)
+                [action.payload.todolistID]: state[action.payload.todolistID].map((t) =>
+                    t.id === action.payload.taskID
+                        ? {...t, ...action.payload.task}
+                        : t)
             }
         case "ADD-TODOLIST":
             return {[action.todoList.id]: [], ...state};
@@ -100,28 +91,28 @@ export const updateTaskAC = (todolistID: string, taskID: string, task: TaskType)
 
 
 // Thunk Creators
-export const fetchTasksTC = (todolistID: string) => (dispatch: Dispatch) => {
+export const fetchTasksTC = (todolistID: string) => (dispatch: Dispatch<TasksActionType>) => {
     todolistAPI.getTasks(todolistID)
         .then((resp) => {
             dispatch(setTasksAC(todolistID, resp.data.items));
         })
 }
 
-export const deleteTaskTC = (todolistID: string, taskID: string) => (dispatch: Dispatch) => {
+export const deleteTaskTC = (todolistID: string, taskID: string) => (dispatch: Dispatch<TasksActionType>) => {
     todolistAPI.deleteTask(todolistID, taskID)
         .then((resp) => {
             dispatch(removeTaskAC(todolistID, taskID));
         })
 }
 
-export const addTaskTC = (todolistID: string, title: string) => (dispatch: Dispatch) => {
+export const addTaskTC = (todolistID: string, title: string) => (dispatch: Dispatch<TasksActionType>) => {
     todolistAPI.createTask(todolistID, title)
         .then((resp) => {
             dispatch(addTaskAC(todolistID, resp.data.data.item));
         });
 }
 
-export const updateTaskTC = (todolistID: string, taskID: string, value: UpdateTaskType) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+export const updateTaskTC = (todolistID: string, taskID: string, value: UpdateTaskType) => (dispatch: Dispatch<TasksActionType>, getState: () => AppRootStateType) => {
     const task = getState().tasks[todolistID].find(t => t.id === taskID);
 
     if (task) {
@@ -131,6 +122,21 @@ export const updateTaskTC = (todolistID: string, taskID: string, value: UpdateTa
             });
     }
 }
+
+
+// types
+export type TasksActionType =
+    RemoveTaskACType
+    | AddTaskACType
+    | UpdateTaskACType
+    | AddTodoListACType
+    | RemoveTodolistACType
+    | SetTasksACType
+    | SetTodolistsACType
+
+export type TasksStateType = {
+    [key: string]: TaskType[];
+};
 
 export type UpdateTaskType = {
     title?: string

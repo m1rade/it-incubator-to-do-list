@@ -1,12 +1,12 @@
 import React, {ChangeEvent, memo, useCallback} from "react";
 import {Checkbox, IconButton} from "@mui/material";
 import {deepOrange} from "@mui/material/colors";
-import EditableSpan from "./components/EditableSpan";
+import EditableSpan from "../../../../components/EditableSpan/EditableSpan";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import {deleteTaskTC, updateTaskTC} from "./state/tasks_reducer";
+import {deleteTaskTC, updateTaskTC} from "../../../../state/tasks_reducer";
 import {useDispatch} from "react-redux";
-import {TaskStatuses, TaskType} from "./api/todolist-api";
-import {AppDispatch} from "./state/store";
+import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
+import {AppDispatch} from "../../../../state/store";
 
 
 export type TaskWithReduxPropsType = {
@@ -14,7 +14,7 @@ export type TaskWithReduxPropsType = {
     task: TaskType,
 }
 
-export const TaskWithRedux = memo(({todoListID, task}: TaskWithReduxPropsType) => {
+export const Task = memo(({todoListID, task}: TaskWithReduxPropsType) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const onClickRemoveTask = useCallback(() => dispatch(deleteTaskTC(todoListID, task.id)), [dispatch, todoListID, task.id]);

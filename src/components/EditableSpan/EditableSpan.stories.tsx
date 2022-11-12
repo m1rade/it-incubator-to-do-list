@@ -1,5 +1,5 @@
 import {ComponentMeta, ComponentStory} from "@storybook/react";
-import EditableSpan from "../components/EditableSpan";
+import EditableSpan from "./EditableSpan";
 import React, {useState} from "react";
 
 export default {

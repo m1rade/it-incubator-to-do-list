@@ -6,7 +6,7 @@ import {
     todoLists_reducer,
 } from "./todoLists_reducer";
 import {v1} from "uuid";
-import {FilterValuesType, TodoListsType} from "../App";
+import {FilterValuesType, TodoListsType} from "../misc/App_old";
 
 let todolistId1: string;
 let todolistId2: string;
@@ -30,7 +30,7 @@ test("correct todolist should be removed", () => {
 });
 
 test("correct todolist should be added", () => {
-    let newTodolistTitle = "New Todolist";
+    let newTodolistTitle = "New Todolist_old";
 
     const endState = todoLists_reducer(startState, addTodoListAC(newTodolistTitle));
 
@@ -40,7 +40,7 @@ test("correct todolist should be added", () => {
 });
 
 test("correct todolist should change its name", () => {
-    let newTodolistTitle = "New Todolist";
+    let newTodolistTitle = "New Todolist_old";
 
     const endState = todoLists_reducer(startState, changeTodoListTitleAC(todolistId2, newTodolistTitle));
 
