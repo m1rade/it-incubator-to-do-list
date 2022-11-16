@@ -3,18 +3,19 @@ import AddItemForm from "../../../components/AddItemForm/AddItemForm";
 import EditableSpan from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@mui/material";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppRootStateType} from "../../../state/store";
-import {addTaskTC, fetchTasksTC} from "../../../state/tasks_reducer";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../state/store";
+import {addTaskTC, fetchTasksTC} from "./Task/tasks_reducer";
 import {
     changeTodoListFilterAC,
     changeTodoTitleTC,
     deleteTodoTC,
     FilterValuesType,
     TodolistDomainType
-} from "../../../state/todoLists_reducer";
+} from "./todoLists_reducer";
 import {Task} from "./Task/Task";
 import {TaskStatuses, TaskType} from "../../../api/todolist-api";
+import {useAppSelector} from "../../../utils/customHooks";
 
 
 type PropsType = {
@@ -23,7 +24,7 @@ type PropsType = {
 
 export const Todolist = memo(({todoList}: PropsType) => {
     console.log("TodoList")
-    const tasks = useSelector<AppRootStateType, TaskType[]>((state) => state.tasks[todoList.id]);
+    const tasks = useAppSelector<TaskType[]>((state) => state.tasks[todoList.id]);
     const dispatch = useDispatch<AppDispatch>();
 
 

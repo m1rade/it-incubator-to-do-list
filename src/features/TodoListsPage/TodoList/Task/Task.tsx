@@ -3,7 +3,7 @@ import {Checkbox, IconButton} from "@mui/material";
 import {deepOrange} from "@mui/material/colors";
 import EditableSpan from "../../../../components/EditableSpan/EditableSpan";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import {deleteTaskTC, updateTaskTC} from "../../../../state/tasks_reducer";
+import {deleteTaskTC, updateTaskTC} from "./tasks_reducer";
 import {useDispatch} from "react-redux";
 import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
 import {AppDispatch} from "../../../../state/store";

@@ -1,5 +1,9 @@
-import {addTodoListAC, TodolistDomainType, todoLists_reducer} from "./todoLists_reducer";
-import {tasks_reducer, TasksStateType} from "./tasks_reducer";
+import {
+    addTodoListAC,
+    TodolistDomainType,
+    todoLists_reducer
+} from "../features/TodoListsPage/TodoList/todoLists_reducer";
+import {tasks_reducer, TasksStateType} from "../features/TodoListsPage/TodoList/Task/tasks_reducer";
 import {v1} from "uuid";
 
 let newTodolistID: string;

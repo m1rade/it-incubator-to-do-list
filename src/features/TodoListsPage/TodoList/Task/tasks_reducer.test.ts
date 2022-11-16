@@ -1,7 +1,7 @@
 import {addTaskAC, removeTaskAC, tasks_reducer, TasksStateType, updateTaskAC} from "./tasks_reducer";
-import {addTodoListAC, removeTodoListAC} from "./todoLists_reducer";
+import {addTodoListAC, removeTodoListAC} from "../todoLists_reducer";
 import {v1} from "uuid";
-import {TaskStatuses} from "../api/todolist-api";
+import {TaskStatuses} from "../../../../api/todolist-api";
 
 
 let startState: TasksStateType;

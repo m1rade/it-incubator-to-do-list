@@ -5,9 +5,9 @@ import {Delete} from "@mui/icons-material";
 import {Task_old} from "./Task_old"
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../state/store";
-import {fetchTasksTC} from "../state/tasks_reducer";
+import {fetchTasksTC} from "../features/TodoListsPage/TodoList/Task/tasks_reducer";
 import EditableSpan from "../components/EditableSpan/EditableSpan";
-import {FilterValuesType} from "../state/todoLists_reducer";
+import {FilterValuesType} from "../features/TodoListsPage/TodoList/todoLists_reducer";
 import {TaskStatuses, TaskType} from "../api/todolist-api";
 import AddItemForm from "../components/AddItemForm/AddItemForm";
 

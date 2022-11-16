@@ -5,8 +5,22 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import {LinearProgress} from "@mui/material";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, AppRootStateType} from "../../state/store";
+import {RequestStatusType} from "../../app/app_reducer";
+import Button from "@mui/material/Button";
+import {logoutTC} from "../../features/LoginPage/auth_reducer";
 
-export default function ButtonAppBar() {
+export default function AppNavBar() {
+    const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status);
+    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const logoutHandler = () => {
+        dispatch(logoutTC());
+    }
+
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static">
@@ -23,7 +37,9 @@ export default function ButtonAppBar() {
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         To do lists
                     </Typography>
+                    {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
                 </Toolbar>
+                {status === "loading" && <LinearProgress/>}
             </AppBar>
         </Box>
     );

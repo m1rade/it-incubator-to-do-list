@@ -5,7 +5,12 @@ import AddItemForm from "../components/AddItemForm/AddItemForm";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import {addTaskTC, deleteTaskTC, TasksStateType, updateTaskTC} from "../state/tasks_reducer";
+import {
+    addTaskTC,
+    deleteTaskTC,
+    TasksStateType,
+    updateTaskTC
+} from "../features/TodoListsPage/TodoList/Task/tasks_reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppRootStateType} from "../state/store";
 import {
@@ -15,8 +20,8 @@ import {
     fetchTodoTC,
     FilterValuesType,
     TodolistDomainType
-} from "../state/todoLists_reducer";
-import ButtonAppBar from "../components/ButtonAppBar/ButtonAppBar";
+} from "../features/TodoListsPage/TodoList/todoLists_reducer";
+import AppNavBar from "../components/AppNavBar/AppNavBar";
 import {TaskStatuses} from "../api/todolist-api";
 
 
@@ -97,7 +102,7 @@ function App_old() {
 
     return (
         <div className="App">
-            <ButtonAppBar/>
+            <AppNavBar/>
             <Container fixed>
                 <Grid justifyContent="center" container style={{padding: "30px"}}>
                     <Grid item>
