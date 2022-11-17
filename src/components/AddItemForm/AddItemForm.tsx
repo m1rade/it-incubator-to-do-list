@@ -4,6 +4,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    disabled?: boolean
 }
 
 const AddItemForm = memo((props: AddItemFormPropsType) => {
@@ -42,7 +43,11 @@ const AddItemForm = memo((props: AddItemFormPropsType) => {
                        onChange={onChangeHandler}
                        onKeyDown={onKeyPressHandler}
             />
-            <IconButton aria-label="add" onClick={addItem} color="warning">
+            <IconButton aria-label="add"
+                        onClick={addItem}
+                        color="warning"
+                        disabled={props.disabled}
+            >
                 <AddIcon/>
             </IconButton>
         </div>

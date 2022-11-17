@@ -1,13 +1,8 @@
-import {
-    AppErrorType,
-    SetAppErrorActionType, setAppInitializationAC,
-    setAppInitializationActionType,
-    setAppStatusAC,
-    SetAppStatusActionType
-} from "../../app/app_reducer";
+import {AppActionsType, setAppInitializationAC, setAppStatusAC} from "../../app/app_reducer";
 import {authAPI, authMeResponseType, LoginParamsType, ResultCodes} from "../../api/todolist-api";
 import {Dispatch} from "redux";
-import {authError, handleServerAppError, handleServerNetworkError} from "../../utils/errors_utils";
+import {handleServerAppError, handleServerNetworkError} from "../../utils/errors_utils";
+import {AxiosError} from "axios";
 
 const initialState = {
     isLoggedIn: false
@@ -43,8 +38,8 @@ export const loginTC = (userData: LoginParamsType) =>
             } else {
                 handleServerAppError<{ userId: number }>(resp.data, dispatch);
             }
-        } catch (error) {
-            handleServerNetworkError(error as authError, dispatch);
+        } catch (err) {
+            handleServerNetworkError(err as Error | AxiosError, dispatch);
         }
     }
 
@@ -60,7 +55,7 @@ export const initializeAppTC = () =>
                 handleServerAppError<authMeResponseType>(resp.data, dispatch);
             }
         } catch (err) {
-            handleServerNetworkError(err as authError, dispatch);
+            handleServerNetworkError(err as Error | AxiosError, dispatch);
         } finally {
             dispatch(setAppInitializationAC(true));
         }
@@ -77,8 +72,8 @@ export const logoutTC = () =>
             } else {
                 handleServerAppError(resp.data, dispatch);
             }
-        } catch (error) {
-            handleServerNetworkError(error as authError, dispatch);
+        } catch (err) {
+            handleServerNetworkError(err as Error | AxiosError, dispatch);
         }
 
     }
@@ -89,6 +84,4 @@ type InitialStateType = typeof initialState
 
 export type AuthActionsType =
     ReturnType<typeof setIsLoggedInAC>
-    | SetAppStatusActionType
-    | SetAppErrorActionType
-    | setAppInitializationActionType
+    | AppActionsType

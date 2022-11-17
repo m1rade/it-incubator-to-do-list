@@ -5,7 +5,7 @@ import {Button, IconButton} from "@mui/material";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../../state/store";
-import {addTaskTC, fetchTasksTC} from "./Task/tasks_reducer";
+import {addTaskTC, fetchTasksTC, TaskDomainType} from "./Task/tasks_reducer";
 import {
     changeTodoListFilterAC,
     changeTodoTitleTC,
@@ -14,7 +14,7 @@ import {
     TodolistDomainType
 } from "./todoLists_reducer";
 import {Task} from "./Task/Task";
-import {TaskStatuses, TaskType} from "../../../api/todolist-api";
+import {TaskStatuses} from "../../../api/todolist-api";
 import {useAppSelector} from "../../../utils/customHooks";
 
 
@@ -24,7 +24,7 @@ type PropsType = {
 
 export const Todolist = memo(({todoList}: PropsType) => {
     console.log("TodoList")
-    const tasks = useAppSelector<TaskType[]>((state) => state.tasks[todoList.id]);
+    const tasks = useAppSelector<TaskDomainType[]>((state) => state.tasks[todoList.id]);
     const dispatch = useDispatch<AppDispatch>();
 
 
@@ -68,11 +68,16 @@ export const Todolist = memo(({todoList}: PropsType) => {
                     title={todoList.title}
                     changeTitle={changeTodolistTitle}
                 />
-                <IconButton aria-label="delete" onClick={removeTodolistHandler}>
+                <IconButton aria-label="delete"
+                            onClick={removeTodolistHandler}
+                            disabled={todoList.entityStatus === "loading"}
+                >
                     <DeleteSweepOutlinedIcon/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addTask}/>
+            <AddItemForm addItem={addTask}
+                         disabled={todoList.entityStatus === "loading"}
+            />
             <ul className="tasks">
                 {mappedTasks.length !== 0 ? mappedTasks : <div>Empty</div>}
             </ul>

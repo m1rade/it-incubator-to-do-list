@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, {AlertProps} from "@mui/material/Alert";
 import {useDispatch} from "react-redux";
@@ -11,7 +11,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 
-export const ErrorSnackbar = () => {
+export const ErrorSnackbar = memo(() => {
 
     const error = useAppSelector<AppErrorType>(state => state.app.error)
 
@@ -31,4 +31,4 @@ export const ErrorSnackbar = () => {
             </Alert>
         </Snackbar>
     );
-}
+});

@@ -11,8 +11,9 @@ import {AppDispatch, AppRootStateType} from "../../state/store";
 import {RequestStatusType} from "../../app/app_reducer";
 import Button from "@mui/material/Button";
 import {logoutTC} from "../../features/LoginPage/auth_reducer";
+import {memo} from "react";
 
-export default function AppNavBar() {
+const AppNavBar = memo(() => {
     const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status);
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
     const dispatch = useDispatch<AppDispatch>();
@@ -43,4 +44,6 @@ export default function AppNavBar() {
             </AppBar>
         </Box>
     );
-}
+})
+
+export default AppNavBar;

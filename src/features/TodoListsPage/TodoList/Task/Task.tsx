@@ -3,18 +3,18 @@ import {Checkbox, IconButton} from "@mui/material";
 import {deepOrange} from "@mui/material/colors";
 import EditableSpan from "../../../../components/EditableSpan/EditableSpan";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import {deleteTaskTC, updateTaskTC} from "./tasks_reducer";
+import {deleteTaskTC, TaskDomainType, updateTaskTC} from "./tasks_reducer";
 import {useDispatch} from "react-redux";
-import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
+import {TaskStatuses} from "../../../../api/todolist-api";
 import {AppDispatch} from "../../../../state/store";
 
 
-export type TaskWithReduxPropsType = {
-    todoListID: string,
-    task: TaskType,
+export type TaskPropsType = {
+    todoListID: string
+    task: TaskDomainType
 }
 
-export const Task = memo(({todoListID, task}: TaskWithReduxPropsType) => {
+export const Task = memo(({todoListID, task}: TaskPropsType) => {
     const dispatch = useDispatch<AppDispatch>();
 
     const onClickRemoveTask = useCallback(() => dispatch(deleteTaskTC(todoListID, task.id)), [dispatch, todoListID, task.id]);
@@ -35,9 +35,13 @@ export const Task = memo(({todoListID, task}: TaskWithReduxPropsType) => {
                 }}
                 onChange={onChangeStatusHandler}
                 checked={task.status === TaskStatuses.Completed}
+                disabled={task.entityStatus === "loading"}
             />
             <EditableSpan title={task.title} changeTitle={changeTitle}/>
-            <IconButton aria-label="delete" onClick={onClickRemoveTask}>
+            <IconButton aria-label="delete"
+                        onClick={onClickRemoveTask}
+                        disabled={task.entityStatus === "loading"}
+            >
                 <DeleteOutlinedIcon/>
             </IconButton>
         </li>

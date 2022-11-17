@@ -24,7 +24,7 @@ export const TodoListsPage = memo(() => {
 
     const mappedTodoLists = todoLists.map((el) => {
         return (
-            <Grid key={el.id} item xs={4}>
+            <Grid key={el.id} item>
                 <Paper elevation={4} style={{padding: "15px"}}>
                     <Todolist key={el.id} todoList={el}/>
                 </Paper>
@@ -47,7 +47,7 @@ export const TodoListsPage = memo(() => {
                     <AddItemForm addItem={addTodoList}/>
                 </Grid>
             </Grid>
-            <Grid container spacing={4}>
+            <Grid container spacing={3}>
                 {mappedTodoLists.length !== 0 ? (
                     mappedTodoLists
                 ) : (
