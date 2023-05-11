@@ -4,12 +4,14 @@ import {handleServerAppError, handleServerNetworkError} from "utils/error-utils"
 import {AxiosError} from "axios";
 import {AppDispatch} from "app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {fetchTasksTC} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+import {clearTodosTasks} from "common/actions";
 
 
 const initialState: TodolistDomainType[] = [];
 
 const slice = createSlice({
-    name: "todo",
+    name: "todos",
     initialState,
     reducers: {
         setTodolists: (state, action: PayloadAction<{todos: TodolistType[]}>) => {
@@ -40,10 +42,13 @@ const slice = createSlice({
         changeTodolistEntityStatus: (state, action: PayloadAction<{todolistID: string, entityStatus: RequestStatusType}>) => {
             const todo = state.find(tl => tl.id === action.payload.todolistID);
             if (todo) todo.entityStatus = action.payload.entityStatus;
-        }
+        },
     },
     extraReducers: builder => {
-
+        builder
+            .addCase(clearTodosTasks.type, () => {
+                return []
+            })
     }
 });
 
@@ -56,10 +61,12 @@ export const fetchTodoTC = () =>
         dispatch(appActions.setAppStatus({status: "loading"}));
         try {
             const resp = await todolistAPI.getTodolists();
-            dispatch(todolistsActions.setTodolists({todos: resp.data}));
-            dispatch(appActions.setAppStatus({status: "succeeded"}));
+            const todosResp = await dispatch(todolistsActions.setTodolists({todos: resp.data}));
+            todosResp.payload.todos.forEach(tl => dispatch(fetchTasksTC(tl.id)));
         } catch (err) {
             handleServerNetworkError(err as Error | AxiosError, dispatch);
+        } finally {
+            dispatch(appActions.setAppStatus({status: "succeeded"}));
         }
     }
 

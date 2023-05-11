@@ -51,10 +51,6 @@ export const Todolist = memo(({todolist}: PropsType) => {
             tasksForTodolist = tasks;
     }
 
-    useEffect(() => {
-        dispatch(fetchTasksTC(todolist.id));
-    }, []);
-
     const mappedTasks = tasksForTodolist.map((t) => {
         return <Task key={t.id} todolistID={todolist.id} task={t}/>
     });

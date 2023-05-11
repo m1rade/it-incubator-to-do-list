@@ -6,6 +6,7 @@ import {handleServerAppError, handleServerNetworkError} from "utils/error-utils"
 import {AxiosError} from "axios";
 import {AppDispatch, AppRootStateType} from "app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {clearTodosTasks} from "common/actions";
 
 
 const initialState: TasksStateType = {};
@@ -54,6 +55,9 @@ const slice = createSlice({
                 action.payload.todos.forEach(tl => {
                     state[tl.id] = [];
                 });
+            })
+            .addCase(clearTodosTasks, () => {
+                return {}
             })
     }
 });

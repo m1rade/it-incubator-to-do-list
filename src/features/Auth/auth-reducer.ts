@@ -4,6 +4,8 @@ import {AppDispatch} from "app/store";
 import {appActions} from "app/app-reducer";
 import {AxiosError} from "axios";
 import {authAPI, LoginParamsType} from "api/todolist-api";
+import {todolistsActions} from "features/TodoListsPage/TodoList/todolists-reducer";
+import {clearTodosTasks} from "common/actions";
 
 
 const slice = createSlice({
@@ -44,6 +46,7 @@ export const logoutTC = () => (dispatch: AppDispatch) => {
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(authActions.setIsLoggedIn({isLoggedIn: false}))
+                dispatch(clearTodosTasks())
                 dispatch(appActions.setAppStatus({status: "succeeded"}))
             } else {
                 handleServerAppError(res.data, dispatch)
