@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect} from "react";
+import React, {memo, useCallback} from "react";
 import {AddItemForm} from "components/AddItemForm/AddItemForm";
 import {EditableSpan} from "components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@mui/material";
@@ -8,7 +8,7 @@ import {Task} from "./Task/Task";
 import {TaskStatuses} from "api/todolist-api";
 import {useAppSelector} from "utils/customHooks";
 import {AppDispatch} from "app/store";
-import {addTaskTC, fetchTasksTC} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+import {addTaskTC} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
 import {
     changeTodoTitleTC,
     deleteTodoTC,
