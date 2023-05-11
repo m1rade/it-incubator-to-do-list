@@ -25,11 +25,11 @@ export const AddItemForm = React.memo(function ({addItem, disabled = false}: Add
         setTitle(e.currentTarget.value)
     }
 
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (error !== null) {
             setError(null);
         }
-        if (e.charCode === 13) {
+        if (e.key === "Enter") {
             addItemHandler();
         }
     }
@@ -40,7 +40,7 @@ export const AddItemForm = React.memo(function ({addItem, disabled = false}: Add
                    error={!!error}
                    value={title}
                    onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}
+                   onKeyDown={onKeyDownHandler}
                    label="Title"
                    helperText={error}
         />
