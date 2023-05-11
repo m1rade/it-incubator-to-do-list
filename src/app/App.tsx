@@ -5,10 +5,10 @@ import {Container} from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import {Pages} from "./Pages";
 import {useDispatch} from "react-redux";
-import {AppDispatch} from "../state/store";
-import {initializeAppTC} from "../features/LoginPage/auth_reducer";
-import {useAppSelector} from "../utils/customHooks";
-import {ErrorSnackbar} from "../components/ErrorSnackbar/ErrorSnackbar";
+import {useAppSelector} from "utils/customHooks";
+import {ErrorSnackbar} from "components/ErrorSnackbar/ErrorSnackbar";
+import {AppDispatch} from "app/store";
+import {initializeAppTC} from "app/app-reducer";
 
 
 function App() {

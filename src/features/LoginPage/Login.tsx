@@ -1,10 +1,9 @@
 import React from "react";
 import {useDispatch} from "react-redux";
 import {useFormik} from "formik";
-import {LoginParamsType} from "../../api/todolist-api";
+import {LoginParamsType} from "api/todolist-api";
 import {Navigate} from "react-router-dom";
-import {loginTC} from "./auth_reducer";
-import {AppDispatch} from "../../state/store";
+import {loginTC} from "features/LoginPage/auth-reducer";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -13,8 +12,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
-import {ROUTES} from "../../app/Pages";
-import {useAppSelector} from "../../utils/customHooks";
+import {ROUTES} from "app/Pages";
+import {useAppSelector} from "utils/customHooks";
+import {AppDispatch} from "app/store";
 
 type FormikErrorType = {
     email?: string,

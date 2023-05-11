@@ -67,7 +67,7 @@ export type TaskType = {
     startDate: string | null,
     status: TaskStatuses,
     title: string,
-    todoListId: string,
+    todolistID: string,
     completed: boolean,
 }
 

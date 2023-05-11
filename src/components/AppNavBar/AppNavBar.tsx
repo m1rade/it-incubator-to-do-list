@@ -1,4 +1,5 @@
-import * as React from "react";
+import React from "react";
+import {memo} from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,11 +8,10 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import {LinearProgress} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppRootStateType} from "../../state/store";
-import {RequestStatusType} from "../../app/app_reducer";
+import {RequestStatusType} from "app/app-reducer";
 import Button from "@mui/material/Button";
-import {logoutTC} from "../../features/LoginPage/auth_reducer";
-import {memo} from "react";
+import {logoutTC} from "features/LoginPage/auth-reducer";
+import {AppDispatch, AppRootStateType} from "app/store";
 
 const AppNavBar = memo(() => {
     const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status);

@@ -1,16 +1,16 @@
 import React, {memo, useCallback, useEffect} from "react";
 import {Grid, Paper} from "@mui/material";
 import {Todolist} from "./TodoList/Todolist";
-import AddItemForm from "../../components/AddItemForm/AddItemForm";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppRootStateType} from "../../state/store";
-import {addTodoTC, fetchTodoTC, TodolistDomainType} from "./TodoList/todoLists_reducer";
+import {AppDispatch, AppRootStateType} from "app/store";
+import {addTodoTC, fetchTodoTC, TodolistDomainType} from "features/TodoListsPage/TodoList/todolists-reducer";
 import {Navigate} from "react-router-dom";
-import {ROUTES} from "../../app/Pages";
+import {ROUTES} from "app/Pages";
+import {AddItemForm} from "components/AddItemForm/AddItemForm";
 
 
 export const TodoListsPage = memo(() => {
-    const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>((state) => state.todoList);
+    const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>((state) => state.todolists);
     const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
     const dispatch = useDispatch<AppDispatch>();
 
@@ -26,7 +26,7 @@ export const TodoListsPage = memo(() => {
         return (
             <Grid key={el.id} item>
                 <Paper elevation={4} style={{padding: "15px"}}>
-                    <Todolist key={el.id} todoList={el}/>
+                    <Todolist key={el.id} todolist={el} />
                 </Paper>
             </Grid>
         );
