@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {useFormik} from "formik";
 import {LoginParamsType} from "api/todolist-api";
 import {Navigate} from "react-router-dom";
-import {loginTC} from "features/LoginPage/auth-reducer";
+import {loginTC} from "features/Auth/auth-reducer";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import {ROUTES} from "app/Pages";
 import {useAppSelector} from "utils/customHooks";
 import {AppDispatch} from "app/store";
+import {selectIsLoggedIn} from "features/Auth/auth.selectors";
 
 type FormikErrorType = {
     email?: string,
@@ -22,7 +23,7 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
     const dispatch = useDispatch<AppDispatch>();
 
     const formik = useFormik({

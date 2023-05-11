@@ -1,17 +1,20 @@
 import React, {memo, useCallback, useEffect} from "react";
 import {Grid, Paper} from "@mui/material";
 import {Todolist} from "./TodoList/Todolist";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppRootStateType} from "app/store";
-import {addTodoTC, fetchTodoTC, TodolistDomainType} from "features/TodoListsPage/TodoList/todolists-reducer";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "app/store";
+import {addTodoTC, fetchTodoTC} from "features/TodoListsPage/TodoList/todolists-reducer";
 import {Navigate} from "react-router-dom";
 import {ROUTES} from "app/Pages";
 import {AddItemForm} from "components/AddItemForm/AddItemForm";
+import {selectIsLoggedIn} from "features/Auth/auth.selectors";
+import {useAppSelector} from "utils/customHooks";
+import {selectTodolists} from "features/TodoListsPage/TodoList/todolists.selectors";
 
 
 export const TodoListsPage = memo(() => {
-    const todoLists = useSelector<AppRootStateType, TodolistDomainType[]>((state) => state.todolists);
-    const isLoggedIn = useSelector<AppRootStateType, boolean>(state => state.auth.isLoggedIn);
+    const todoLists = useAppSelector(selectTodolists);
+    const isLoggedIn = useAppSelector(selectIsLoggedIn);
     const dispatch = useDispatch<AppDispatch>();
 
     const addTodoList = useCallback((title: string) => {

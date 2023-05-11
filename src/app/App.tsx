@@ -9,10 +9,11 @@ import {useAppSelector} from "utils/customHooks";
 import {ErrorSnackbar} from "components/ErrorSnackbar/ErrorSnackbar";
 import {AppDispatch} from "app/store";
 import {initializeAppTC} from "app/app-reducer";
+import {selectIsInitialized} from "app/app.selectors";
 
 
 function App() {
-    const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized);
+    const isInitialized = useAppSelector(selectIsInitialized);
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {

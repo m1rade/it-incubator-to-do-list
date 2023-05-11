@@ -1,5 +1,5 @@
 import {Dispatch} from "redux"
-import {authActions} from "features/LoginPage/auth-reducer";
+import {authActions} from "features/Auth/auth-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {authAPI} from "api/todolist-api";
 

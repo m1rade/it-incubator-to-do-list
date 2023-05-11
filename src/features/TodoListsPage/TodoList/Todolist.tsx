@@ -8,7 +8,7 @@ import {Task} from "./Task/Task";
 import {TaskStatuses} from "api/todolist-api";
 import {useAppSelector} from "utils/customHooks";
 import {AppDispatch} from "app/store";
-import {addTaskTC, fetchTasksTC, TaskDomainType} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+import {addTaskTC, fetchTasksTC} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
 import {
     changeTodoTitleTC,
     deleteTodoTC,
@@ -23,7 +23,7 @@ type PropsType = {
 };
 
 export const Todolist = memo(({todolist}: PropsType) => {
-    const tasks = useAppSelector<TaskDomainType[]>((state) => state.tasks[todolist.id]);
+    const tasks = useAppSelector((state) => state.tasks[todolist.id]);
     const dispatch = useDispatch<AppDispatch>();
 
 

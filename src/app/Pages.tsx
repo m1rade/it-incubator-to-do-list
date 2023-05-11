@@ -1,7 +1,7 @@
 import React from "react";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {TodoListsPage} from "features/TodoListsPage/TodoListsPage";
-import {Login} from "features/LoginPage/Login";
+import {Login} from "features/Auth/Login";
 
 export enum ROUTES {
     TODOLIST = "/",

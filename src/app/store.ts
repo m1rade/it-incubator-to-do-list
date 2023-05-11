@@ -1,6 +1,6 @@
 import {combineReducers} from "redux"
 import {appReducer} from "./app-reducer"
-import {authReducer} from "features/LoginPage/auth-reducer"
+import {authReducer} from "features/Auth/auth-reducer"
 import {configureStore} from "@reduxjs/toolkit";
 import {todolistsReducer} from "features/TodoListsPage/TodoList/todolists-reducer";
 import {tasksReducer} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
