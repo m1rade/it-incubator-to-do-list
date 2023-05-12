@@ -102,7 +102,9 @@ beforeEach(() => {
 });
 
 test("correct task should be deleted from correct array", () => {
-    const action = tasksActions.removeTask({taskID: "2", todolistID: "todolistID2"});
+    const taskModel = {taskID: "2", todolistID: "todolistID2"};
+
+    const action = tasksThunks.deleteTask.fulfilled(taskModel, "requiredId", taskModel);
 
     const endState = tasksReducer(startState, action)
 

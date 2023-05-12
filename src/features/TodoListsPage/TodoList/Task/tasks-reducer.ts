@@ -135,12 +135,6 @@ const slice = createSlice({
     name: "tasks",
     initialState,
     reducers: {
-        removeTask: (state, action: PayloadAction<{ todolistID: string, taskID: string }>) => {
-            const tasks = state[action.payload.todolistID];
-            const index = tasks.findIndex((t) =>
-                t.id === action.payload.taskID);
-            if (index !== -1) tasks.splice(index, 1);
-        },
         changeTaskEntityStatus: (state, action: PayloadAction<{
             todolistID: string,
             taskID: string,
