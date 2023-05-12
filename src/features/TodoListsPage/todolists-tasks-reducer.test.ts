@@ -1,4 +1,4 @@
-import {TodolistType} from "api/todolist-api";
+import {TodolistType} from "common/api/todolist-api";
 import {tasksReducer, TasksStateType} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
 import {
     TodolistDomainType,

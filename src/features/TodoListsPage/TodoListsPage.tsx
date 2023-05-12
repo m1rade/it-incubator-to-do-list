@@ -1,21 +1,19 @@
 import React, {memo, useCallback, useEffect} from "react";
 import {Grid, Paper} from "@mui/material";
 import {Todolist} from "./TodoList/Todolist";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "app/store";
 import {addTodoTC, fetchTodoTC} from "features/TodoListsPage/TodoList/todolists-reducer";
 import {Navigate} from "react-router-dom";
 import {ROUTES} from "app/Pages";
-import {AddItemForm} from "components/AddItemForm/AddItemForm";
 import {selectIsLoggedIn} from "features/Auth/auth.selectors";
-import {useAppSelector} from "utils/customHooks";
 import {selectTodolists} from "features/TodoListsPage/TodoList/todolists.selectors";
+import {AddItemForm} from "common/components";
+import {useAppDispatch, useAppSelector} from "common/hooks";
 
 
 export const TodoListsPage = memo(() => {
     const todoLists = useAppSelector(selectTodolists);
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     const addTodoList = useCallback((title: string) => {
         dispatch(addTodoTC(title))
@@ -29,7 +27,7 @@ export const TodoListsPage = memo(() => {
         return (
             <Grid key={el.id} item>
                 <Paper elevation={4} style={{padding: "15px"}}>
-                    <Todolist key={el.id} todolist={el} />
+                    <Todolist key={el.id} todolist={el}/>
                 </Paper>
             </Grid>
         );

@@ -1,20 +1,17 @@
 import React, {useEffect} from "react";
 import "./App.css";
-import AppNavBar from "../components/AppNavBar/AppNavBar";
-import {Container} from "@mui/material";
+import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
 import {Pages} from "./Pages";
-import {useDispatch} from "react-redux";
-import {useAppSelector} from "utils/customHooks";
-import {ErrorSnackbar} from "components/ErrorSnackbar/ErrorSnackbar";
-import {AppDispatch} from "app/store";
 import {initializeAppTC} from "app/app-reducer";
 import {selectIsInitialized} from "app/app.selectors";
+import {AppNavBar, ErrorSnackbar} from "common/components";
+import {useAppDispatch, useAppSelector} from "common/hooks";
 
 
 function App() {
     const isInitialized = useAppSelector(selectIsInitialized);
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         dispatch(initializeAppTC());

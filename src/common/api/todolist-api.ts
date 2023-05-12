@@ -18,7 +18,9 @@ export const todolistAPI = {
         return instance.put<{ title: string }, AxiosResponse<ResponseType>>(`todo-lists/${todolistID}`, {title})
     },
     createTodolist(title: string) {
-        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>("todo-lists", {title});
+        return instance.post<{ title: string }, AxiosResponse<ResponseType<{
+            item: TodolistType
+        }>>>("todo-lists", {title});
     },
     deleteTodolist(todolistID: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistID}`);
@@ -26,14 +28,18 @@ export const todolistAPI = {
     getTasks(todolistID: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistID}/tasks`);
     },
-    createTask(todolistID: string, title: string) {
-        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistID}/tasks`, {title});
+    createTask(args: CreateTaskArgsType) {
+        return instance.post<{ title: string }, AxiosResponse<ResponseType<{
+            item: TaskType
+        }>>>(`todo-lists/${args.todolistID}/tasks`, {title: args.title});
     },
-    deleteTask(todolistID: string, taskID: string) {
-        return instance.delete<ResponseType>(`todo-lists/${todolistID}/tasks/${taskID}`);
+    deleteTask(args: DeleteTaskArgsType) {
+        return instance.delete<ResponseType>(`todo-lists/${args.todolistID}/tasks/${args.taskID}`);
     },
     updateTask(todolistID: string, taskID: string, taskModel: UpdateTaskModelType) {
-        return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistID}/tasks/${taskID}`, taskModel);
+        return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{
+            item: TaskType
+        }>>>(`todo-lists/${todolistID}/tasks/${taskID}`, taskModel);
     }
 }
 
@@ -51,24 +57,24 @@ export const authAPI = {
 
 // app types
 export type TodolistType = {
-    id: string,
-    title: string,
-    addedDate: string,
-    order: number,
+    id: string
+    title: string
+    addedDate: string
+    order: number
 }
 
 export type TaskType = {
-    addedDate: string,
-    deadline: string | null,
-    description: string | null,
-    id: string,
-    order: number,
+    addedDate: string
+    deadline: string | null
+    description: string | null
+    id: string
+    order: number
     priority: TodoTaskPriorities
-    startDate: string | null,
-    status: TaskStatuses,
-    title: string,
-    todolistID: string,
-    completed: boolean,
+    startDate: string | null
+    status: TaskStatuses
+    title: string
+    todolistID: string
+    completed: boolean
 }
 
 export enum TaskStatuses {
@@ -93,25 +99,25 @@ export enum ResultCodes {
 }
 
 export type UpdateTaskModelType = {
-    title?: string,
-    description?: string | null,
-    completed?: boolean,
-    status?: TaskStatuses,
-    priority?: TodoTaskPriorities,
-    startDate?: string | null,
-    deadline?: string | null,
+    title?: string
+    description?: string | null
+    completed?: boolean
+    status?: TaskStatuses
+    priority?: TodoTaskPriorities
+    startDate?: string | null
+    deadline?: string | null
 }
 
 export type ResponseType<T = {}> = {
     data: T,
-    messages: string[],
-    fieldErrors: string[],
-    resultCode: number,
+    messages: string[]
+    fieldErrors: string[]
+    resultCode: number
 }
 
 export type authMeResponseType = {
-    id: number,
-    email: string,
+    id: number
+    email: string
     login: string
 }
 
@@ -122,8 +128,24 @@ type GetTasksResponse = {
 }
 
 export type LoginParamsType = {
-    email: string,
-    password: string,
-    rememberMe: boolean,
-    captcha?: string,
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
+}
+
+export type CreateTaskArgsType = {
+    todolistID: string
+    title: string
+}
+
+export type UpdateTaskArgsType = {
+    todolistID: string
+    taskID: string
+    taskModel: UpdateTaskModelType
+}
+
+export type DeleteTaskArgsType = {
+    todolistID: string
+    taskID: string
 }

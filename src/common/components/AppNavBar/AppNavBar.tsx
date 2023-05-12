@@ -4,18 +4,16 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 import Toolbar from "@mui/material/Toolbar";
-import {useDispatch} from "react-redux";
 import Button from "@mui/material/Button";
 import {logoutTC} from "features/Auth/auth-reducer";
-import {AppDispatch} from "app/store";
 import {selectIsLoggedIn} from "features/Auth/auth.selectors";
 import {selectStatus} from "app/app.selectors";
-import {useAppSelector} from "utils/customHooks";
+import {useAppDispatch, useAppSelector} from "common/hooks";
 
-const AppNavBar = memo(() => {
+export const AppNavBar = memo(() => {
     const status = useAppSelector(selectStatus);
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     const logoutHandler = () => {
         dispatch(logoutTC());
@@ -35,5 +33,3 @@ const AppNavBar = memo(() => {
         </Box>
     );
 })
-
-export default AppNavBar;

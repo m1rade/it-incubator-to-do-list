@@ -1,12 +1,11 @@
 import React, {ChangeEvent, memo, useCallback} from "react";
 import {Checkbox, IconButton} from "@mui/material";
 import {deepOrange} from "@mui/material/colors";
-import {EditableSpan} from "components/EditableSpan/EditableSpan";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import {deleteTaskTC, TaskDomainType, updateTaskTC} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
-import {useDispatch} from "react-redux";
-import {TaskStatuses} from "api/todolist-api";
-import {AppDispatch} from "app/store";
+import {deleteTaskTC, TaskDomainType, tasksThunks} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+import {TaskStatuses} from "common/api/todolist-api";
+import {EditableSpan} from "common/components";
+import {useAppDispatch} from "common/hooks";
 
 
 export type TaskPropsType = {
@@ -15,16 +14,24 @@ export type TaskPropsType = {
 }
 
 export const Task = memo(({todolistID, task}: TaskPropsType) => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     const onClickRemoveTask = useCallback(() => dispatch(deleteTaskTC(todolistID, task.id)), [dispatch, todolistID, task.id]);
 
     const onChangeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const currentTaskStatus = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
-        dispatch(updateTaskTC(todolistID, task.id, {status: currentTaskStatus}))
+        dispatch(tasksThunks.updateTask({
+            todolistID,
+            taskID: task.id,
+            taskModel: {status: currentTaskStatus}
+        }))
     }, [dispatch, todolistID, task.id]);
 
-    const changeTitle = useCallback((title: string) => dispatch(updateTaskTC(todolistID, task.id, {title})), [dispatch, todolistID, task.id]);
+    const changeTitle = useCallback((title: string) => dispatch(tasksThunks.updateTask({
+        todolistID,
+        taskID: task.id,
+        taskModel: {title}
+    })), [dispatch, todolistID, task.id]);
 
     return (
         <li className={task.status === TaskStatuses.Completed ? "is-done" : ""}>

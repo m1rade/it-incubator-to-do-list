@@ -1,10 +1,10 @@
-import {handleServerAppError, handleServerNetworkError} from "utils/error-utils"
+import {handleServerAppError, handleServerNetworkError} from "common/utils/error-utils"
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppDispatch} from "app/store";
 import {appActions} from "app/app-reducer";
 import {AxiosError} from "axios";
-import {authAPI, LoginParamsType} from "api/todolist-api";
-import {clearTodosTasks} from "common/actions";
+import {authAPI, LoginParamsType} from "common/api/todolist-api";
+import {clearTodosTasks} from "common/actions/actions";
 
 
 const slice = createSlice({

@@ -1,10 +1,10 @@
-import {ResultCodes, todolistAPI, TodolistType} from "api/todolist-api";
+import {ResultCodes, todolistAPI, TodolistType} from "common/api/todolist-api";
 import {appActions, RequestStatusType,} from "app/app-reducer";
-import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {AxiosError} from "axios";
 import {AppDispatch} from "app/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchTasksTC} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+import {tasksThunks} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+import {handleServerAppError, handleServerNetworkError} from "common/utils";
 import {clearTodosTasks} from "common/actions";
 
 
@@ -14,7 +14,7 @@ const slice = createSlice({
     name: "todos",
     initialState,
     reducers: {
-        setTodolists: (state, action: PayloadAction<{todos: TodolistType[]}>) => {
+        setTodolists: (state, action: PayloadAction<{ todos: TodolistType[] }>) => {
             return action.payload.todos.map(t => ({...t, filter: "all", entityStatus: "idle"}));
         },
         removeTodolist: (state, action: PayloadAction<{ todolistID: string }>) => {
@@ -39,7 +39,10 @@ const slice = createSlice({
             const todo = state.find(tl => tl.id === action.payload.todolistID);
             if (todo) todo.filter = action.payload.filter;
         },
-        changeTodolistEntityStatus: (state, action: PayloadAction<{todolistID: string, entityStatus: RequestStatusType}>) => {
+        changeTodolistEntityStatus: (state, action: PayloadAction<{
+            todolistID: string,
+            entityStatus: RequestStatusType
+        }>) => {
             const todo = state.find(tl => tl.id === action.payload.todolistID);
             if (todo) todo.entityStatus = action.payload.entityStatus;
         },
@@ -62,7 +65,7 @@ export const fetchTodoTC = () =>
         try {
             const resp = await todolistAPI.getTodolists();
             const todosResp = await dispatch(todolistsActions.setTodolists({todos: resp.data}));
-            todosResp.payload.todos.forEach(tl => dispatch(fetchTasksTC(tl.id)));
+            todosResp.payload.todos.forEach(tl => dispatch(tasksThunks.fetchTasks(tl.id)));
         } catch (err) {
             handleServerNetworkError(err as Error | AxiosError, dispatch);
         } finally {
