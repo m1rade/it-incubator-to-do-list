@@ -1,17 +1,17 @@
 import {todolistsActions} from "features/TodoListsPage/TodoList/todolists-reducer";
-import {
-    CreateTaskArgsType,
-    DeleteTaskArgsType,
-    ResultCodes,
-    TaskType,
-    todolistAPI,
-    UpdateTaskArgsType
-} from "common/api/todolist-api";
 import {appActions, RequestStatusType,} from "app/app-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {handleServerAppError, handleServerNetworkError} from "common/utils";
 import {clearTodosTasks} from "common/actions";
 import {createAppAsyncThunk} from "common/hooks";
+import {
+    CreateTaskArgsType,
+    DeleteTaskArgsType,
+    TaskType,
+    todolistAPI,
+    UpdateTaskArgsType
+} from "features/TodoListsPage/TodoList/todolistsAPI";
+import {ResultCodes} from "common/enums";
 
 
 const fetchTasks = createAppAsyncThunk<{ todolistID: string, tasks: TaskType[] }, string>("tasks/fetchTasks",
@@ -185,6 +185,8 @@ const slice = createSlice({
 export const tasksReducer = slice.reducer;
 export const tasksActions = slice.actions;
 export const tasksThunks = {fetchTasks, addTask, updateTask, deleteTask};
+
+
 
 // types
 export type TaskDomainType = TaskType & {

@@ -2,10 +2,10 @@ import React, {ChangeEvent, memo, useCallback} from "react";
 import {Checkbox, IconButton} from "@mui/material";
 import {deepOrange} from "@mui/material/colors";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import {deleteTaskTC, TaskDomainType, tasksThunks} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
-import {TaskStatuses} from "common/api/todolist-api";
+import {TaskDomainType, tasksThunks} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
 import {EditableSpan} from "common/components";
 import {useAppDispatch} from "common/hooks";
+import {TaskStatuses} from "common/enums";
 
 
 export type TaskPropsType = {
@@ -16,7 +16,10 @@ export type TaskPropsType = {
 export const Task = memo(({todolistID, task}: TaskPropsType) => {
     const dispatch = useAppDispatch();
 
-    const onClickRemoveTask = useCallback(() => dispatch(deleteTaskTC(todolistID, task.id)), [dispatch, todolistID, task.id]);
+    const onClickRemoveTask = useCallback(() => dispatch(tasksThunks.deleteTask({
+        todolistID,
+        taskID: task.id
+    })), [dispatch, todolistID, task.id]);
 
     const onChangeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         const currentTaskStatus = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;

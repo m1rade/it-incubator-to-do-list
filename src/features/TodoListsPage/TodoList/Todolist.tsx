@@ -2,7 +2,6 @@ import React, {memo, useCallback} from "react";
 import {Button, IconButton} from "@mui/material";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import {Task} from "./Task/Task";
-import {TaskStatuses} from "common/api/todolist-api";
 import {
     changeTodoTitleTC,
     deleteTodoTC,
@@ -13,6 +12,7 @@ import {
 import {tasksThunks} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
 import {AddItemForm, EditableSpan} from "common/components";
 import {useAppDispatch, useAppSelector} from "common/hooks";
+import {TaskStatuses} from "common/enums";
 
 
 type PropsType = {

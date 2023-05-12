@@ -1,4 +1,3 @@
-import {ResultCodes, todolistAPI, TodolistType} from "common/api/todolist-api";
 import {appActions, RequestStatusType,} from "app/app-reducer";
 import {AxiosError} from "axios";
 import {AppDispatch} from "app/store";
@@ -6,6 +5,8 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {tasksThunks} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
 import {handleServerAppError, handleServerNetworkError} from "common/utils";
 import {clearTodosTasks} from "common/actions";
+import {todolistAPI, TodolistType} from "features/TodoListsPage/TodoList/todolistsAPI";
+import {ResultCodes} from "common/enums";
 
 
 const initialState: TodolistDomainType[] = [];

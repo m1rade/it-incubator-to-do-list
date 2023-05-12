@@ -1,12 +1,12 @@
 import axios, {AxiosError} from "axios";
-import {ResponseType} from "common/api/todolist-api";
+import {ServerResponseType} from "common/api/instance";
 import {appActions} from "app/app-reducer";
 import {todolistsActions} from "features/TodoListsPage/TodoList/todolists-reducer";
 import {tasksActions} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
 import {AppDispatch} from "app/store";
 
 
-export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: AppDispatch, todolistID?: string, taskID?: string) => {
+export const handleServerAppError = <T>(data: ServerResponseType<T>, dispatch: AppDispatch, todolistID?: string, taskID?: string) => {
 
     if (data.messages.length) {
         dispatch(appActions.setAppError({error: data.messages[0]}));

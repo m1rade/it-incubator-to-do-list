@@ -1,6 +1,5 @@
 import React from "react";
 import {useFormik} from "formik";
-import {LoginParamsType} from "common/api/todolist-api";
 import {Navigate} from "react-router-dom";
 import {loginTC} from "features/Auth/auth-reducer";
 import Grid from "@mui/material/Grid";
@@ -14,6 +13,7 @@ import TextField from "@mui/material/TextField";
 import {ROUTES} from "app/Pages";
 import {selectIsLoggedIn} from "features/Auth/auth.selectors";
 import {useAppDispatch, useAppSelector} from "common/hooks";
+import {LoginParamsType} from "features/Auth/authAPI";
 
 type FormikErrorType = {
     email?: string,
@@ -63,8 +63,8 @@ export const Login = () => {
                     <FormControl>
                         <FormLabel>
                             <p>To log in get registered
-                                <a href={"https://social-network.samuraijs.com/"}
-                                   target={"_blank"}> here
+                                <a href="https://social-network.samuraijs.com/"
+                                   target="_blank" rel="noreferrer"> here
                                 </a>
                             </p>
                             <p>or use common test account credentials:</p>

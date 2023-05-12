@@ -3,8 +3,8 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppDispatch} from "app/store";
 import {appActions} from "app/app-reducer";
 import {AxiosError} from "axios";
-import {authAPI, LoginParamsType} from "common/api/todolist-api";
 import {clearTodosTasks} from "common/actions/actions";
+import {authAPI, LoginParamsType} from "features/Auth/authAPI";
 
 
 const slice = createSlice({

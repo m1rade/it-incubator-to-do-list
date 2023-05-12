@@ -1,7 +1,8 @@
 import {Dispatch} from "redux"
 import {authActions} from "features/Auth/auth-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {authAPI} from "common/api/todolist-api";
+import {authAPI} from "features/Auth/authAPI";
+import {ResultCodes} from "common/enums";
 
 const initialState = {
     status: "idle" as RequestStatusType,
@@ -37,7 +38,7 @@ export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     authAPI.authMe().then(res => {
-        if (res.data.resultCode === 0) {
+        if (res.data.resultCode === ResultCodes.OK) {
             dispatch(authActions.setIsLoggedIn({isLoggedIn: true}));
         } else {
 
