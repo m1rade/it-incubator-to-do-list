@@ -1,7 +1,7 @@
 import React, {memo, useCallback, useEffect} from "react";
 import {Grid, Paper} from "@mui/material";
 import {Todolist} from "./TodoList/Todolist";
-import {addTodoTC, fetchTodoTC} from "features/TodoListsPage/TodoList/todolists-reducer";
+import {todosThunks} from "features/TodoListsPage/TodoList/todolists-reducer";
 import {Navigate} from "react-router-dom";
 import {ROUTES} from "app/Pages";
 import {selectIsLoggedIn} from "features/Auth/auth.selectors";
@@ -16,11 +16,11 @@ export const TodoListsPage = memo(() => {
     const dispatch = useAppDispatch();
 
     const addTodoList = useCallback((title: string) => {
-        dispatch(addTodoTC(title))
+        dispatch(todosThunks.addTodo(title))
     }, [dispatch]);
 
     useEffect(() => {
-        isLoggedIn && dispatch(fetchTodoTC())
+        isLoggedIn && dispatch(todosThunks.fetchTodos())
     }, []);
 
     const mappedTodoLists = todoLists.map((el) => {

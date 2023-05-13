@@ -8,8 +8,8 @@ export const todolistAPI = {
     getTodolists() {
         return instance.get<TodolistType[]>("todo-lists");
     },
-    changeTodolistTitle(todolistID: string, title: string) {
-        return instance.put<{ title: string }, AxiosResponse<ServerResponseType>>(`todo-lists/${todolistID}`, {title})
+    changeTodolistTitle(args: ChangeTodoTitleArgsType) {
+        return instance.put<{ title: string }, AxiosResponse<ServerResponseType>>(`todo-lists/${args.todolistID}`, {title: args.title})
     },
     createTodolist(title: string) {
         return instance.post<{ title: string }, AxiosResponse<ServerResponseType<{
@@ -89,4 +89,9 @@ export type UpdateTaskArgsType = {
 export type DeleteTaskArgsType = {
     todolistID: string
     taskID: string
+}
+
+export type ChangeTodoTitleArgsType = {
+    todolistID: string,
+    title: string
 }

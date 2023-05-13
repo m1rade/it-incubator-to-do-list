@@ -1,13 +1,12 @@
-import React, {memo, useCallback} from "react";
+import React, {memo, useCallback, useEffect} from "react";
 import {Button, IconButton} from "@mui/material";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import {Task} from "./Task/Task";
 import {
-    changeTodoTitleTC,
-    deleteTodoTC,
     FilterValuesType,
     TodolistDomainType,
-    todolistsActions
+    todolistsActions,
+    todosThunks
 } from "features/TodoListsPage/TodoList/todolists-reducer";
 import {tasksThunks} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
 import {AddItemForm, EditableSpan} from "common/components";
@@ -23,6 +22,10 @@ export const Todolist = memo(({todolist}: PropsType) => {
     const tasks = useAppSelector((state) => state.tasks[todolist.id]);
     const dispatch = useAppDispatch();
 
+    useEffect(() => {
+        dispatch(tasksThunks.fetchTasks(todolist.id))
+    }, [todolist])
+
 
     const addTask = useCallback((title: string) => {
         dispatch(tasksThunks.addTask({todolistID: todolist.id, title}));
@@ -32,9 +35,12 @@ export const Todolist = memo(({todolist}: PropsType) => {
         dispatch(todolistsActions.changeTodolistFilter({todolistID: todolist.id, filter}));
     }, [dispatch, todolist.id]);
 
-    const removeTodolistHandler = useCallback(() => dispatch(deleteTodoTC(todolist.id)), [dispatch, todolist.id]);
+    const removeTodolistHandler = useCallback(() => dispatch(todosThunks.deleteTodo(todolist.id)), [dispatch, todolist.id]);
 
-    const changeTodolistTitle = useCallback((title: string) => dispatch(changeTodoTitleTC(todolist.id, title)), [dispatch, todolist.id]);
+    const changeTodolistTitle = useCallback((title: string) => dispatch(todosThunks.changeTodoTitle({
+        todolistID: todolist.id,
+        title
+    })), [dispatch, todolist.id]);
 
     let tasksForTodolist;
     switch (todolist.filter) {

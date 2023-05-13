@@ -1,4 +1,4 @@
-import {todolistsActions} from "features/TodoListsPage/TodoList/todolists-reducer";
+import {todolistsActions, todosThunks} from "features/TodoListsPage/TodoList/todolists-reducer";
 import {appActions, RequestStatusType,} from "app/app-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {handleServerAppError, handleServerNetworkError} from "common/utils";
@@ -165,13 +165,13 @@ const slice = createSlice({
                     t.id === action.payload.taskID);
                 if (index !== -1) tasks.splice(index, 1);
             })
-            .addCase(todolistsActions.addTodolist, (state, action) => {
+            .addCase(todosThunks.addTodo.fulfilled, (state, action) => {
                 state[action.payload.todolist.id] = []
             })
-            .addCase(todolistsActions.removeTodolist, (state, action) => {
+            .addCase(todosThunks.deleteTodo.fulfilled, (state, action) => {
                 delete state[action.payload.todolistID];
             })
-            .addCase(todolistsActions.setTodolists, (state, action) => {
+            .addCase(todosThunks.fetchTodos.fulfilled, (state, action) => {
                 action.payload.todos.forEach(tl => {
                     state[tl.id] = [];
                 });
