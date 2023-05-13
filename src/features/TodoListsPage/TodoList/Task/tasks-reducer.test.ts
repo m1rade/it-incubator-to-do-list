@@ -3,7 +3,7 @@ import {
     TasksStateType,
     tasksThunks
 } from "features/TodoListsPage/TodoList/Task/tasks-reducer";
-import {todolistsActions, todosThunks} from "features/TodoListsPage/TodoList/todolists-reducer";
+import {todosThunks} from "features/TodoListsPage/TodoList/todolists-reducer";
 import {TaskStatuses, TodoTaskPriorities} from "common/enums";
 
 let startState: TasksStateType = {};
