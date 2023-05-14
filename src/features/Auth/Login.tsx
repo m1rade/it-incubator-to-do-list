@@ -1,7 +1,6 @@
 import React from "react";
 import {useFormik} from "formik";
 import {Navigate} from "react-router-dom";
-import {loginTC} from "features/Auth/auth-reducer";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -11,9 +10,11 @@ import FormGroup from "@mui/material/FormGroup";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import {ROUTES} from "app/Pages";
-import {selectIsLoggedIn} from "features/Auth/auth.selectors";
+import {selectCaptcha, selectIsLoggedIn} from "features/Auth/auth.selectors";
 import {useAppDispatch, useAppSelector} from "common/hooks";
 import {LoginParamsType} from "features/Auth/authAPI";
+import {authThunks} from "features/Auth/auth-reducer";
+import {ServerResponseType} from "common/types";
 
 type FormikErrorType = {
     email?: string,
@@ -22,6 +23,7 @@ type FormikErrorType = {
 
 export const Login = () => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
+    const captcha = useAppSelector(selectCaptcha);
     const dispatch = useAppDispatch();
 
     const formik = useFormik({
@@ -29,25 +31,31 @@ export const Login = () => {
             email: "",
             password: "",
             rememberMe: false,
-            captcha: "",
+            captcha,
         },
         validate: (values: LoginParamsType) => {
-            const errors: FormikErrorType = {}
-            if (!values.email) {
-                errors.email = "Required";
-            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = "Invalid email address";
-            }
-            if (!values.password) {
-                errors.password = "Required";
-            } else if (values.password.length < 3) {
-                errors.password = "Password must be 3 characters or more";
-            }
-            return errors;
+            // const errors: FormikErrorType = {}
+            // if (!values.email) {
+            //     errors.email = "Required";
+            // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            //     errors.email = "Invalid email address";
+            // }
+            // if (!values.password) {
+            //     errors.password = "Required";
+            // } else if (values.password.length < 3) {
+            //     errors.password = "Password must be 3 characters or more";
+            // }
+            // return errors;
         },
         onSubmit: (values: LoginParamsType) => {
-            dispatch(loginTC(values));
-            formik.resetForm();
+            dispatch(authThunks.login(values))
+                .unwrap()
+                .catch((reason: ServerResponseType) => {
+                    reason.fieldsErrors.forEach(f => {
+                        f.field && formik.setFieldError(f.field, f.error);
+                    })
+                })
+
         },
     });
 
@@ -55,7 +63,7 @@ export const Login = () => {
     if (isLoggedIn) {
         return <Navigate to={ROUTES.TODOLIST}/>
     }
-
+    console.log(formik.errors.captcha);
     return (
         <Grid container justifyContent={"center"}>
             <Grid item justifyContent={"center"}>
@@ -89,6 +97,11 @@ export const Login = () => {
                                               control={<Checkbox {...formik.getFieldProps("rememberMe")}
                                                                  checked={formik.values.rememberMe}/>}
                             />
+                            {captcha && <div>
+                                <img src={captcha} alt="captcha"/>
+                                <TextField type="text" {...formik.getFieldProps("captcha")} />
+                                {formik.errors.captcha && <div style={{color: "red"}}>{formik.errors.captcha}</div>}
+                            </div>}
                             <Button type={"submit"} variant={"contained"} color={"primary"}>
                                 Login
                             </Button>

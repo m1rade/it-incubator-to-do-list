@@ -3,10 +3,10 @@ import "./App.css";
 import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
 import {Pages} from "./Pages";
-import {initializeAppTC} from "app/app-reducer";
 import {selectIsInitialized} from "app/app.selectors";
 import {AppNavBar, ErrorSnackbar} from "common/components";
 import {useAppDispatch, useAppSelector} from "common/hooks";
+import {authThunks} from "features/Auth/auth-reducer";
 
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(initializeAppTC());
+        dispatch(authThunks.initializeApp());
     }, []);
 
 

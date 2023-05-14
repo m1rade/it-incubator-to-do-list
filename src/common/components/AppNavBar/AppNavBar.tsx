@@ -5,10 +5,10 @@ import Typography from "@mui/material/Typography";
 import LinearProgress from "@mui/material/LinearProgress";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import {logoutTC} from "features/Auth/auth-reducer";
 import {selectIsLoggedIn} from "features/Auth/auth.selectors";
 import {selectStatus} from "app/app.selectors";
 import {useAppDispatch, useAppSelector} from "common/hooks";
+import {authThunks} from "features/Auth/auth-reducer";
 
 export const AppNavBar = memo(() => {
     const status = useAppSelector(selectStatus);
@@ -16,7 +16,7 @@ export const AppNavBar = memo(() => {
     const dispatch = useAppDispatch();
 
     const logoutHandler = () => {
-        dispatch(logoutTC());
+        dispatch(authThunks.logout());
     }
 
     return (

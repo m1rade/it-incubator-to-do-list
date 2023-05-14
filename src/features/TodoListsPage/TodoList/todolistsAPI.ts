@@ -1,7 +1,7 @@
 import {AxiosResponse} from "axios";
 import {instance} from "common/api";
-import {ServerResponseType} from "common/api/instance";
 import {TaskStatuses, TodoTaskPriorities} from "common/enums";
+import {ServerResponseType} from "common/types";
 
 
 export const todolistAPI = {

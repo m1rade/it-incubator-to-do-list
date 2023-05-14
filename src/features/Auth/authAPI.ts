@@ -1,5 +1,6 @@
 import {AxiosResponse} from "axios";
-import {instance, ServerResponseType} from "common/api/instance";
+import {instance} from "common/api";
+import {ServerResponseType} from "common/types";
 
 export const authAPI = {
     login(userData: LoginParamsType) {
