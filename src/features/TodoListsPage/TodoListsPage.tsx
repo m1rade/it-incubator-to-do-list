@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect} from "react";
+import React, {memo, useEffect} from "react";
 import {Grid, Paper} from "@mui/material";
 import {Todolist} from "./TodoList/Todolist";
 import {todosThunks} from "features/TodoListsPage/TodoList/todolists-reducer";
