@@ -1,4 +1,4 @@
-import {tasksReducer, TasksStateType} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+import {tasksReducer, TasksStateType} from "features/TodoListsPage/TodoList/Tasks/Task/tasks-reducer";
 import {
     TodolistDomainType,
     todolistsReducer, todosThunks

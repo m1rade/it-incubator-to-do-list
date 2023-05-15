@@ -34,7 +34,7 @@ const addTask = createAppAsyncThunk<{ todolistID: string, task: TaskType }, Crea
                 return {todolistID: args.todolistID, task: resp.data.data.item};
             } else {
                 handleServerAppError(resp.data, dispatch);
-                return rejectWithValue(null);
+                return rejectWithValue(resp.data);
             }
         });
     });

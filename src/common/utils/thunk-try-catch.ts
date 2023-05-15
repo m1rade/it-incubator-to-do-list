@@ -3,7 +3,7 @@ import {AppDispatch, AppRootStateType} from "app/store";
 import {appActions} from "app/app-reducer";
 import {ServerResponseType} from "common/types";
 import {todolistsActions} from "features/TodoListsPage/TodoList/todolists-reducer";
-import {tasksActions} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+import {tasksActions} from "features/TodoListsPage/TodoList/Tasks/Task/tasks-reducer";
 import {handleServerNetworkError} from "common/utils";
 
 /**

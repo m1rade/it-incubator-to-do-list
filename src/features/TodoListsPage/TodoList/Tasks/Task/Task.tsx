@@ -1,19 +1,20 @@
-import React, {ChangeEvent, memo} from "react";
+import React, {ChangeEvent, FC, memo} from "react";
 import {Checkbox, IconButton} from "@mui/material";
 import {deepOrange} from "@mui/material/colors";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import {TaskDomainType, tasksThunks} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+import {TaskDomainType, tasksThunks} from "features/TodoListsPage/TodoList/Tasks/Task/tasks-reducer";
 import {EditableSpan} from "common/components";
 import {useActions} from "common/hooks";
 import {TaskStatuses} from "common/enums";
+import s from "./styles.module.css"
 
 
-export type TaskPropsType = {
+export type PropsType = {
     todolistID: string
     task: TaskDomainType
 }
 
-export const Task = memo(({todolistID, task}: TaskPropsType) => {
+export const Task: FC<PropsType> = memo(({todolistID, task}) => {
     const {updateTask, deleteTask} = useActions(tasksThunks)
 
     const onClickRemoveTask = () => deleteTask({todolistID, taskID: task.id});
@@ -34,7 +35,7 @@ export const Task = memo(({todolistID, task}: TaskPropsType) => {
     });
 
     return (
-        <li className={task.status === TaskStatuses.Completed ? "is-done" : ""}>
+        <li className={task.status === TaskStatuses.Completed ? s.isDone : ""}>
             <Checkbox
                 sx={{
                     color: deepOrange[800],

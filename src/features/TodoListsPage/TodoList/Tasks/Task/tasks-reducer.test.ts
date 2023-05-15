@@ -2,7 +2,7 @@ import {
     tasksReducer,
     TasksStateType,
     tasksThunks
-} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+} from "features/TodoListsPage/TodoList/Tasks/Task/tasks-reducer";
 import {todosThunks} from "features/TodoListsPage/TodoList/todolists-reducer";
 import {TaskStatuses, TodoTaskPriorities} from "common/enums";
 

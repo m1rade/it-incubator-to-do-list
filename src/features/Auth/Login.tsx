@@ -1,5 +1,5 @@
 import React from "react";
-import {useFormik} from "formik";
+import {FormikHelpers, useFormik} from "formik";
 import {Navigate} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -11,15 +11,11 @@ import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import {ROUTES} from "app/Pages";
 import {selectCaptcha, selectIsLoggedIn} from "features/Auth/auth.selectors";
-import {useActions, useAppDispatch, useAppSelector} from "common/hooks";
+import {useActions, useAppSelector} from "common/hooks";
 import {LoginParamsType} from "features/Auth/authAPI";
 import {authThunks} from "features/Auth/auth-reducer";
 import {ServerResponseType} from "common/types";
 
-type FormikErrorType = {
-    email?: string,
-    password?: string,
-}
 
 export const Login = () => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -35,7 +31,7 @@ export const Login = () => {
             captcha,
         },
         validate: (values: LoginParamsType) => {
-            const errors: FormikErrorType = {}
+            const errors: Partial<Omit<LoginParamsType, "rememberMe" | "captcha">> = {}
             if (!values.email) {
                 errors.email = "Required";
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
@@ -48,12 +44,12 @@ export const Login = () => {
             }
             return errors;
         },
-        onSubmit: (values: LoginParamsType) => {
+        onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
             login(values)
                 .unwrap()
                 .catch((reason: ServerResponseType) => {
                     reason.fieldsErrors.forEach(f => {
-                        f.field && formik.setFieldError(f.field, f.error);
+                        f.field && formikHelpers.setFieldError(f.field, f.error);
                     })
                 })
 
@@ -64,7 +60,7 @@ export const Login = () => {
     if (isLoggedIn) {
         return <Navigate to={ROUTES.TODOLIST}/>
     }
-    console.log(formik.errors.captcha);
+
     return (
         <Grid container justifyContent={"center"}>
             <Grid item justifyContent={"center"}>

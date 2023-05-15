@@ -7,7 +7,7 @@ import {
     todolistsReducer, todosThunks
 } from "features/TodoListsPage/TodoList/todolists-reducer";
 import {TodolistType} from "features/TodoListsPage/TodoList/todolistsAPI";
-import {tasksReducer} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
+import {tasksReducer} from "features/TodoListsPage/TodoList/Tasks/Task/tasks-reducer";
 
 let todolistID1: string
 let todolistID2: string

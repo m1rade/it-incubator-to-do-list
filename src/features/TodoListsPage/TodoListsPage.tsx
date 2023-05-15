@@ -17,7 +17,9 @@ export const TodoListsPage = memo(() => {
     const {addTodo, fetchTodos} = useActions(todosThunks)
 
 
-    const addTodoList = (title: string) => addTodo(title);
+    const addTodoList = (title: string) => {
+        return addTodo(title).unwrap();
+    }
 
     useEffect(() => {
         isLoggedIn && fetchTodos({});
