@@ -7,16 +7,16 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import {selectIsLoggedIn} from "features/Auth/auth.selectors";
 import {selectStatus} from "app/app.selectors";
-import {useAppDispatch, useAppSelector} from "common/hooks";
+import {useActions, useAppSelector} from "common/hooks";
 import {authThunks} from "features/Auth/auth-reducer";
 
 export const AppNavBar = memo(() => {
     const status = useAppSelector(selectStatus);
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
-    const dispatch = useAppDispatch();
+    const {logout} = useActions(authThunks);
 
     const logoutHandler = () => {
-        dispatch(authThunks.logout());
+        logout({});
     }
 
     return (

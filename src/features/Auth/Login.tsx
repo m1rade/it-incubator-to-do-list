@@ -11,7 +11,7 @@ import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import {ROUTES} from "app/Pages";
 import {selectCaptcha, selectIsLoggedIn} from "features/Auth/auth.selectors";
-import {useAppDispatch, useAppSelector} from "common/hooks";
+import {useActions, useAppDispatch, useAppSelector} from "common/hooks";
 import {LoginParamsType} from "features/Auth/authAPI";
 import {authThunks} from "features/Auth/auth-reducer";
 import {ServerResponseType} from "common/types";
@@ -24,7 +24,8 @@ type FormikErrorType = {
 export const Login = () => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
     const captcha = useAppSelector(selectCaptcha);
-    const dispatch = useAppDispatch();
+
+    const {login} = useActions(authThunks)
 
     const formik = useFormik({
         initialValues: {
@@ -48,7 +49,7 @@ export const Login = () => {
             return errors;
         },
         onSubmit: (values: LoginParamsType) => {
-            dispatch(authThunks.login(values))
+            login(values)
                 .unwrap()
                 .catch((reason: ServerResponseType) => {
                     reason.fieldsErrors.forEach(f => {

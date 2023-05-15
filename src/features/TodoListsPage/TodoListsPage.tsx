@@ -20,7 +20,7 @@ export const TodoListsPage = memo(() => {
     const addTodoList = (title: string) => addTodo(title);
 
     useEffect(() => {
-        isLoggedIn && fetchTodos();
+        isLoggedIn && fetchTodos({});
     }, []);
 
     const mappedTodoLists = todoLists.map((el) => {
