@@ -1,1 +1,1 @@
-export {clearTodosTasks} from "./actions"
+export { clearTodosTasks } from "./actions";

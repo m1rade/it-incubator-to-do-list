@@ -1,3 +1,3 @@
-import {createAction} from "@reduxjs/toolkit";
+import { createAction } from "@reduxjs/toolkit";
 
-export const clearTodosTasks = createAction('common/clearTodosData')
+export const clearTodosTasks = createAction("common/clearTodosData");
