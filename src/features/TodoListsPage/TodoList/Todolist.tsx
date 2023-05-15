@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useEffect} from "react";
+import React, {memo, useEffect} from "react";
 import {Button, IconButton} from "@mui/material";
 import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import {Task} from "./Task/Task";
@@ -10,7 +10,7 @@ import {
 } from "features/TodoListsPage/TodoList/todolists-reducer";
 import {tasksThunks} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
 import {AddItemForm, EditableSpan} from "common/components";
-import {useAppDispatch, useAppSelector} from "common/hooks";
+import {useActions, useAppSelector} from "common/hooks";
 import {TaskStatuses} from "common/enums";
 
 
@@ -20,27 +20,28 @@ type PropsType = {
 
 export const Todolist = memo(({todolist}: PropsType) => {
     const tasks = useAppSelector((state) => state.tasks[todolist.id]);
-    const dispatch = useAppDispatch();
+
+    const {fetchTasks, addTask} = useActions(tasksThunks);
+    const {changeTodoTitle, deleteTodo} = useActions(todosThunks);
+    const {changeTodolistFilter} = useActions(todolistsActions)
 
     useEffect(() => {
-        dispatch(tasksThunks.fetchTasks(todolist.id))
+        fetchTasks(todolist.id);
     }, [todolist])
 
 
-    const addTask = useCallback((title: string) => {
-        dispatch(tasksThunks.addTask({todolistID: todolist.id, title}));
-    }, [dispatch, todolist.id]);
+    const addTaskHandler = (title: string) => addTask({todolistID: todolist.id, title});
 
-    const onButtonClickChangeFilter = useCallback((filter: FilterValuesType) => () => {
-        dispatch(todolistsActions.changeTodolistFilter({todolistID: todolist.id, filter}));
-    }, [dispatch, todolist.id]);
+    const onButtonClickChangeFilter = (filter: FilterValuesType) => () =>
+        changeTodolistFilter({todolistID: todolist.id, filter});
 
-    const removeTodolistHandler = useCallback(() => dispatch(todosThunks.deleteTodo(todolist.id)), [dispatch, todolist.id]);
 
-    const changeTodolistTitle = useCallback((title: string) => dispatch(todosThunks.changeTodoTitle({
+    const removeTodolistHandler = () => deleteTodo(todolist.id);
+
+    const changeTodolistTitleHandler = (title: string) => changeTodoTitle({
         todolistID: todolist.id,
         title
-    })), [dispatch, todolist.id]);
+    });
 
     let tasksForTodolist;
     switch (todolist.filter) {
@@ -64,7 +65,7 @@ export const Todolist = memo(({todolist}: PropsType) => {
             <h3 className="editableSpan">
                 <EditableSpan
                     value={todolist.title}
-                    onChange={changeTodolistTitle}
+                    onChange={changeTodolistTitleHandler}
                 />
                 <IconButton aria-label="delete"
                             onClick={removeTodolistHandler}
@@ -73,7 +74,7 @@ export const Todolist = memo(({todolist}: PropsType) => {
                     <DeleteSweepOutlinedIcon/>
                 </IconButton>
             </h3>
-            <AddItemForm addItem={addTask}
+            <AddItemForm addItem={addTaskHandler}
                          disabled={todolist.entityStatus === "loading"}
             />
             <ul className="tasks">

@@ -1,10 +1,10 @@
-import React, {ChangeEvent, memo, useCallback} from "react";
+import React, {ChangeEvent, memo} from "react";
 import {Checkbox, IconButton} from "@mui/material";
 import {deepOrange} from "@mui/material/colors";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import {TaskDomainType, tasksThunks} from "features/TodoListsPage/TodoList/Task/tasks-reducer";
 import {EditableSpan} from "common/components";
-import {useAppDispatch} from "common/hooks";
+import {useActions} from "common/hooks";
 import {TaskStatuses} from "common/enums";
 
 
@@ -14,27 +14,24 @@ export type TaskPropsType = {
 }
 
 export const Task = memo(({todolistID, task}: TaskPropsType) => {
-    const dispatch = useAppDispatch();
+    const {updateTask, deleteTask} = useActions(tasksThunks)
 
-    const onClickRemoveTask = useCallback(() => dispatch(tasksThunks.deleteTask({
-        todolistID,
-        taskID: task.id
-    })), [dispatch, todolistID, task.id]);
+    const onClickRemoveTask = () => deleteTask({todolistID, taskID: task.id});
 
-    const onChangeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const currentTaskStatus = e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New;
-        dispatch(tasksThunks.updateTask({
+        updateTask({
             todolistID,
             taskID: task.id,
             taskModel: {status: currentTaskStatus}
-        }))
-    }, [dispatch, todolistID, task.id]);
+        })
+    };
 
-    const changeTitle = useCallback((title: string) => dispatch(tasksThunks.updateTask({
+    const changeTitle = (title: string) => updateTask({
         todolistID,
         taskID: task.id,
         taskModel: {title}
-    })), [dispatch, todolistID, task.id]);
+    });
 
     return (
         <li className={task.status === TaskStatuses.Completed ? "is-done" : ""}>

@@ -7,20 +7,20 @@ import {ROUTES} from "app/Pages";
 import {selectIsLoggedIn} from "features/Auth/auth.selectors";
 import {selectTodolists} from "features/TodoListsPage/TodoList/todolists.selectors";
 import {AddItemForm} from "common/components";
-import {useAppDispatch, useAppSelector} from "common/hooks";
+import {useActions, useAppSelector} from "common/hooks";
 
 
 export const TodoListsPage = memo(() => {
     const todoLists = useAppSelector(selectTodolists);
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
-    const dispatch = useAppDispatch();
 
-    const addTodoList = useCallback((title: string) => {
-        dispatch(todosThunks.addTodo(title))
-    }, [dispatch]);
+    const {addTodo, fetchTodos} = useActions(todosThunks)
+
+
+    const addTodoList = (title: string) => addTodo(title);
 
     useEffect(() => {
-        isLoggedIn && dispatch(todosThunks.fetchTodos())
+        isLoggedIn && fetchTodos();
     }, []);
 
     const mappedTodoLists = todoLists.map((el) => {

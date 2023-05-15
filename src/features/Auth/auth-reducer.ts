@@ -24,8 +24,8 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean, captcha?: string }, Log
                 return {isLoggedIn: false};
 
             } else {
-                const isShowError = !resp.data.fieldsErrors.length
-                handleServerAppError<{ userId: number }>(resp.data, dispatch, undefined, undefined, isShowError);
+                const isShowError = !resp.data.fieldsErrors.length;
+                handleServerAppError<{ userId: number }>(resp.data, dispatch, isShowError);
                 return rejectWithValue(resp.data);
             }
 

@@ -5,16 +5,17 @@ import CircularProgress from "@mui/material/CircularProgress";
 import {Pages} from "./Pages";
 import {selectIsInitialized} from "app/app.selectors";
 import {AppNavBar, ErrorSnackbar} from "common/components";
-import {useAppDispatch, useAppSelector} from "common/hooks";
+import {useAppSelector} from "common/hooks";
 import {authThunks} from "features/Auth/auth-reducer";
+import {useActions} from "common/hooks";
 
 
 function App() {
     const isInitialized = useAppSelector(selectIsInitialized);
-    const dispatch = useAppDispatch();
+    const {initializeApp} = useActions(authThunks)
 
     useEffect(() => {
-        dispatch(authThunks.initializeApp());
+        initializeApp();
     }, []);
 
 
