@@ -1,6 +1,5 @@
 import { BaseThunkAPI } from "@reduxjs/toolkit/dist/createAsyncThunk";
 import { AppDispatch, AppRootStateType } from "app/store";
-import { appActions } from "app/app-reducer";
 import { ServerResponseType } from "common/types";
 import { todolistsActions } from "features/TodoListsPage/TodoList/todolists-reducer";
 import { tasksActions } from "features/TodoListsPage/TodoList/Tasks/Task/tasks-reducer";
@@ -21,7 +20,7 @@ export const thunkTryCatch = async (
 ) => {
     const { dispatch, rejectWithValue } = thunkAPI;
 
-    dispatch(appActions.setAppStatus({ status: "loading" }));
+    // dispatch(appActions.setAppStatus({ status: "loading" }));
 
     todolistID && dispatch(todolistsActions.changeTodolistEntityStatus({ todolistID, entityStatus: "loading" }));
 
@@ -41,7 +40,7 @@ export const thunkTryCatch = async (
         handleServerNetworkError(e, dispatch);
         return rejectWithValue(null);
     } finally {
-        dispatch(appActions.setAppStatus({ status: "idle" }));
+        // dispatch(appActions.setAppStatus({ status: "idle" }));
 
         todolistID && dispatch(todolistsActions.changeTodolistEntityStatus({ todolistID, entityStatus: "idle" }));
 

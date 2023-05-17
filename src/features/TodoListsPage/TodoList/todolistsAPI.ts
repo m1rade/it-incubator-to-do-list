@@ -8,21 +8,13 @@ export const todolistAPI = {
         return instance.get<TodolistType[]>("todo-lists");
     },
     changeTodolistTitle(args: ChangeTodoTitleArgsType) {
-        return instance.put<
-            {
-                title: string;
-            },
-            AxiosResponse<ServerResponseType>
-        >(`todo-lists/${args.todolistID}`, { title: args.title });
+        return instance.put<{ title: string },
+            AxiosResponse<ServerResponseType>>(`todo-lists/${args.todolistID}`, { title: args.title });
     },
     createTodolist(title: string) {
         return instance.post<
             { title: string },
-            AxiosResponse<
-                ServerResponseType<{
-                    item: TodolistType;
-                }>
-            >
+            AxiosResponse<ServerResponseType<{ item: TodolistType }>>
         >("todo-lists", { title });
     },
     deleteTodolist(todolistID: string) {
@@ -32,27 +24,17 @@ export const todolistAPI = {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistID}/tasks`);
     },
     createTask(args: CreateTaskArgsType) {
-        return instance.post<
-            { title: string },
-            AxiosResponse<
-                ServerResponseType<{
-                    item: TaskType;
-                }>
-            >
-        >(`todo-lists/${args.todolistID}/tasks`, { title: args.title });
+        return instance.post<{ title: string }, AxiosResponse<ServerResponseType<{
+            item: TaskType;
+        }>>>(`todo-lists/${args.todolistID}/tasks`, { title: args.title });
     },
     deleteTask(args: DeleteTaskArgsType) {
         return instance.delete<ServerResponseType>(`todo-lists/${args.todolistID}/tasks/${args.taskID}`);
     },
     updateTask(todolistID: string, taskID: string, taskModel: UpdateTaskModelType) {
-        return instance.put<
-            UpdateTaskModelType,
-            AxiosResponse<
-                ServerResponseType<{
-                    item: TaskType;
-                }>
-            >
-        >(`todo-lists/${todolistID}/tasks/${taskID}`, taskModel);
+        return instance.put<UpdateTaskModelType, AxiosResponse<ServerResponseType<{
+            item: TaskType
+        }>>>(`todo-lists/${todolistID}/tasks/${taskID}`, taskModel);
     },
 };
 

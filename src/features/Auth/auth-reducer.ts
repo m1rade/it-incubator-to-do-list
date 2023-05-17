@@ -3,7 +3,7 @@ import { appActions } from "app/app-reducer";
 import { createAppAsyncThunk } from "common/hooks";
 import { ResultCodes } from "common/enums";
 import { clearTodosTasks } from "common/actions";
-import { handleServerAppError, handleServerNetworkError } from "common/utils";
+import { handleServerNetworkError } from "common/utils";
 import { authAPI, LoginParamsType } from "features/Auth/authAPI";
 import { securityAPI } from "features/Auth/securityAPI";
 
@@ -12,9 +12,6 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean; captcha?: string }, Log
     async (args, thunkAPI) => {
         const { dispatch, rejectWithValue } = thunkAPI;
 
-        dispatch(appActions.setAppStatus({ status: "loading" }));
-
-        try {
             const resp = await authAPI.login(args);
 
             if (resp.data.resultCode === ResultCodes.OK) {
@@ -24,37 +21,21 @@ const login = createAppAsyncThunk<{ isLoggedIn: boolean; captcha?: string }, Log
                 return { isLoggedIn: false };
             } else {
                 const isShowError = !resp.data.fieldsErrors.length;
-                handleServerAppError<{ userId: number }>(resp.data, dispatch, isShowError);
-                return rejectWithValue(resp.data);
+                return rejectWithValue({ data: resp.data, isShowError });
             }
-        } catch (e) {
-            handleServerNetworkError(e, dispatch);
-            return rejectWithValue(null);
-        } finally {
-            dispatch(appActions.setAppStatus({ status: "succeeded" }));
-        }
-    }
+    },
 );
 
 const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, void>("auth/logout", async (_, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI;
 
-    dispatch(appActions.setAppStatus({ status: "loading" }));
+    const resp = await authAPI.logout();
 
-    try {
-        const resp = await authAPI.logout();
-
-        if (resp.data.resultCode === ResultCodes.OK) {
-            dispatch(clearTodosTasks());
-            dispatch(appActions.setAppStatus({ status: "succeeded" }));
-            return { isLoggedIn: false };
-        } else {
-            handleServerAppError(resp.data, dispatch);
-            return rejectWithValue(null);
-        }
-    } catch (e) {
-        handleServerNetworkError(e, dispatch);
-        return rejectWithValue(null);
+    if (resp.data.resultCode === ResultCodes.OK) {
+        dispatch(clearTodosTasks());
+        return { isLoggedIn: false };
+    } else {
+        return rejectWithValue({ data: resp.data, isShowError: true });
     }
 });
 
@@ -67,11 +48,8 @@ const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>("app/in
         if (resp.data.resultCode === ResultCodes.OK) {
             return { isLoggedIn: true };
         } else {
-            return rejectWithValue(null);
+            return rejectWithValue({ data: resp.data, isShowError: false });
         }
-    } catch (e) {
-        handleServerNetworkError(e, dispatch);
-        return rejectWithValue(null);
     } finally {
         dispatch(appActions.setAppInitialized({ isInitialized: true }));
     }
@@ -82,7 +60,6 @@ const getCaptcha = createAppAsyncThunk<{ captchaURL: string }, void>("auth/getCa
 
     try {
         const resp = await securityAPI.getCaptcha();
-        dispatch(appActions.setAppStatus({ status: "succeeded" }));
         return { captchaURL: resp.data.url };
     } catch (e) {
         handleServerNetworkError(e, dispatch);

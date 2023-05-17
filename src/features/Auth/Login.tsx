@@ -14,7 +14,7 @@ import { selectCaptcha, selectIsLoggedIn } from "features/Auth/auth.selectors";
 import { useActions, useAppSelector } from "common/hooks";
 import { LoginParamsType } from "features/Auth/authAPI";
 import { authThunks } from "features/Auth/auth-reducer";
-import { ServerResponseType } from "common/types";
+import { RejectedWithValueType } from "common/hooks";
 
 export const Login = () => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -46,8 +46,8 @@ export const Login = () => {
         onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
             login(values)
                 .unwrap()
-                .catch((reason: ServerResponseType) => {
-                    reason.fieldsErrors.forEach(f => {
+                .catch((reason: RejectedWithValueType) => {
+                    reason.data.fieldsErrors.forEach(f => {
                         f.field && formikHelpers.setFieldError(f.field, f.error);
                     });
                 });
