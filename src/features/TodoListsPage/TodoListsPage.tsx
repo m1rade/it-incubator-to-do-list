@@ -8,10 +8,12 @@ import { selectIsLoggedIn } from "features/Auth/auth.selectors";
 import { selectTodolists } from "features/TodoListsPage/TodoList/todolists.selectors";
 import { AddItemForm } from "common/components";
 import { useActions, useAppSelector } from "common/hooks";
+import { selectStatus } from "app/app.selectors";
 
 export const TodoListsPage = memo(() => {
     const todoLists = useAppSelector(selectTodolists);
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
+    const appStatus = useAppSelector(selectStatus);
 
     const { addTodo, fetchTodos } = useActions(todosThunks);
 
@@ -21,7 +23,7 @@ export const TodoListsPage = memo(() => {
 
     useEffect(() => {
         isLoggedIn && fetchTodos({});
-    }, []);
+    }, [isLoggedIn]);
 
     const mappedTodoLists = todoLists.map(el => {
         return (
@@ -41,7 +43,7 @@ export const TodoListsPage = memo(() => {
         <>
             <Grid justifyContent="center" container style={{ padding: "30px" }}>
                 <Grid item>
-                    <AddItemForm addItem={addTodoList} />
+                    <AddItemForm addItem={addTodoList} disabled={appStatus === "loading"}/>
                 </Grid>
             </Grid>
             <Grid container spacing={3}>

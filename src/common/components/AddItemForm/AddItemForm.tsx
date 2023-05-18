@@ -2,6 +2,7 @@ import React, { ChangeEvent, FC, KeyboardEvent, useState } from "react";
 import TextField from "@mui/material/TextField";
 import { AddBox } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
+import { RejectedWithValueType } from "common/hooks";
 
 type PropsType = {
     addItem: (title: string) => Promise<any>;
@@ -18,7 +19,9 @@ export const AddItemForm: FC<PropsType> = React.memo(({ addItem, disabled = fals
                 .then(() => {
                     setTitle("");
                 })
-                .catch(() => {});
+                .catch((e: RejectedWithValueType) => {
+                    setError(e.data.messages.length ? "Title error" : "Some error");
+                });
         } else {
             setError("Title is required");
         }
@@ -37,6 +40,10 @@ export const AddItemForm: FC<PropsType> = React.memo(({ addItem, disabled = fals
         }
     };
 
+    const onFocusHandler = () => {
+        if (error !== null) setError(null);
+    };
+
     return (
         <div>
             <TextField
@@ -46,6 +53,7 @@ export const AddItemForm: FC<PropsType> = React.memo(({ addItem, disabled = fals
                 value={title}
                 onChange={onChangeHandler}
                 onKeyDown={onKeyDownHandler}
+                onFocus={onFocusHandler}
                 label="Title"
                 helperText={error}
             />
