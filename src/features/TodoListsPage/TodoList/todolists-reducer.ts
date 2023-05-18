@@ -12,31 +12,30 @@ const fetchTodos = createAppAsyncThunk<{ todos: TodolistType[] }, void>("todos/f
     });
 
 const addTodo = createAppAsyncThunk<{ todolist: TodolistType }, string>("todos/addTodo",
-    async (title, thunkAPI) => {
+    async (title, {rejectWithValue}) => {
         const resp = await todolistAPI.createTodolist(title);
 
         if (resp.data.resultCode === ResultCodes.OK) {
             return { todolist: resp.data.data.item };
         } else {
-            return thunkAPI.rejectWithValue({ data: resp.data, isShowError: true });
+            return rejectWithValue({ data: resp.data, isShowError: true });
         }
     });
 
 const deleteTodo = createAppAsyncThunk<{ todolistID: string }, string>(
     "todos/deleteTodo",
-    async (todolistID, thunkAPI) => {
-        // TODO 500 error when deleting todolist
-        const resp = await todolistAPI.deleteTodolist(todolistID);
-
-        thunkAPI.dispatch(todolistsActions.changeTodolistEntityStatus({
+    async (todolistID, {dispatch, rejectWithValue}) => {
+        dispatch(todolistsActions.changeTodolistEntityStatus({
             todolistID,
             entityStatus: "loading",
         }));
 
+        const resp = await todolistAPI.deleteTodolist(todolistID);
+
         if (resp.data.resultCode === ResultCodes.OK) {
             return { todolistID };
         } else {
-            return thunkAPI.rejectWithValue({ data: resp.data, isShowError: true });
+            return rejectWithValue({ data: resp.data, isShowError: true });
         }
 
     },
@@ -44,23 +43,23 @@ const deleteTodo = createAppAsyncThunk<{ todolistID: string }, string>(
 
 const changeTodoTitle = createAppAsyncThunk<ChangeTodoTitleArgsType, ChangeTodoTitleArgsType>(
     "todos/changeTodoTitle",
-    async (args, thunkAPI) => {
-        const resp = await todolistAPI.changeTodolistTitle({ ...args });
-
-        thunkAPI.dispatch(todolistsActions.changeTodolistEntityStatus({
+    async (args, {dispatch, rejectWithValue}) => {
+        dispatch(todolistsActions.changeTodolistEntityStatus({
             todolistID: args.todolistID,
             entityStatus: "loading",
         }));
 
+        const resp = await todolistAPI.changeTodolistTitle({ ...args });
+
         if (resp.data.resultCode === ResultCodes.OK) {
             return { ...args };
         } else {
-            thunkAPI.dispatch(todolistsActions.changeTodolistEntityStatus({
+            dispatch(todolistsActions.changeTodolistEntityStatus({
                 todolistID: args.todolistID,
                 entityStatus: "failed",
             }));
 
-            return thunkAPI.rejectWithValue({ data: resp.data, isShowError: true });
+            return rejectWithValue({ data: resp.data, isShowError: true });
         }
     },
 );

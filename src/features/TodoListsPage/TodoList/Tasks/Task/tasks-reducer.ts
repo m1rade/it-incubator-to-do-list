@@ -24,13 +24,12 @@ const fetchTasks = createAppAsyncThunk<{ todolistID: string; tasks: TaskType[] }
 const addTask = createAppAsyncThunk<{ todolistID: string; task: TaskType }, CreateTaskArgsType>(
     "tasks/addTask",
     async (args, { dispatch, rejectWithValue }) => {
-
-        const resp = await todolistAPI.createTask({ todolistID: args.todolistID, title: args.title });
-
         dispatch(todolistsActions.changeTodolistEntityStatus({
             todolistID: args.todolistID,
             entityStatus: "loading",
         }));
+
+        const resp = await todolistAPI.createTask({ todolistID: args.todolistID, title: args.title });
 
         if (resp.data.resultCode === ResultCodes.OK) {
             dispatch(todolistsActions.changeTodolistEntityStatus({
@@ -93,6 +92,7 @@ const deleteTask = createAppAsyncThunk<DeleteTaskArgsType, DeleteTaskArgsType>(
             taskID: args.taskID,
             entityStatus: "loading",
         }));
+
         const resp = await todolistAPI.deleteTask(args);
 
         if (resp.data.resultCode === ResultCodes.OK) {

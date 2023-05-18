@@ -18,7 +18,7 @@ export const Todolist: FC<PropsType> = memo(({ todolist }) => {
 
     useEffect(() => {
         fetchTasks(todolist.id);
-    }, [todolist]);
+    }, []);
 
     const addTaskHandler = (title: string) => {
         return addTask({ todolistID: todolist.id, title }).unwrap();

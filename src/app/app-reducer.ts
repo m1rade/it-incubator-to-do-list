@@ -29,7 +29,7 @@ const slice = createSlice({
                 (action) => {
                     return action.type.endsWith("/pending");
                 },
-                (state, action) => {
+                (state) => {
                     state.status = "loading";
                 })
             .addMatcher((action) => {
