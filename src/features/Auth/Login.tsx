@@ -10,10 +10,10 @@ import FormGroup from "@mui/material/FormGroup";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import { authThunks, LoginThunkReturnType } from "features/Auth/auth-reducer";
-import { ROUTES } from "app/Pages";
 import { RejectedWithValueType, useActions, useAppSelector } from "common/hooks";
 import { selectCaptcha, selectIsLoggedIn } from "features/Auth/auth.selectors";
 import { LoginParamsType } from "features/Auth/authAPI";
+import { ROUTES } from "app/Routes";
 
 export const Login = () => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -61,7 +61,7 @@ export const Login = () => {
     });
 
     if (isLoggedIn) {
-        return <Navigate to={ROUTES.TODOLIST} />;
+        return <Navigate to={ROUTES.TODOLISTS} />;
     }
 
     return (

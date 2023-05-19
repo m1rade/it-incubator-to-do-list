@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import "./App.css";
 import Container from "@mui/material/Container";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Pages } from "./Pages";
+import { Pages } from "app/Routes/Pages";
 import { selectIsInitialized } from "app/app.selectors";
 import { AppNavBar, ErrorSnackbar } from "common/components";
 import { useAppSelector } from "common/hooks";
 import { authThunks } from "features/Auth/auth-reducer";
 import { useActions } from "common/hooks";
 
-function App() {
+const App = () => {
     const isInitialized = useAppSelector(selectIsInitialized);
     const { initializeApp } = useActions(authThunks);
 
@@ -19,7 +19,7 @@ function App() {
 
     if (!isInitialized) {
         return (
-            <div style={{ position: "fixed", top: "30%", textAlign: "center", width: "100%" }}>
+            <div className="circularProgress">
                 <CircularProgress />
             </div>
         );

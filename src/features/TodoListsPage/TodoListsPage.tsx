@@ -3,12 +3,12 @@ import { Grid, Paper } from "@mui/material";
 import { Todolist } from "./TodoList/Todolist";
 import { todosThunks } from "features/TodoListsPage/TodoList/todolists-reducer";
 import { Navigate } from "react-router-dom";
-import { ROUTES } from "app/Pages";
 import { selectIsLoggedIn } from "features/Auth/auth.selectors";
 import { selectTodolists } from "features/TodoListsPage/TodoList/todolists.selectors";
 import { AddItemForm } from "common/components";
 import { useActions, useAppSelector } from "common/hooks";
 import { selectStatus } from "app/app.selectors";
+import { ROUTES } from "app/Routes";
 
 export const TodoListsPage = memo(() => {
     const todoLists = useAppSelector(selectTodolists);
