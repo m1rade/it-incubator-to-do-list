@@ -61,7 +61,7 @@ export const Login = () => {
     });
 
     if (isLoggedIn) {
-        return <Navigate to={ROUTES.TODOLISTS} />;
+        return <Navigate to={ROUTES.HOME} />;
     }
 
     return (
