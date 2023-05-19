@@ -2,5 +2,5 @@
     "short_name": "Todolist App",
     "name": "Simple todolist application",
     "start_url": ".",
-    "display": "standalone",
+    "display": "standalone"
 }
