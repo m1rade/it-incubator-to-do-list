@@ -9,12 +9,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
+import { authThunks, LoginThunkReturnType } from "features/Auth/auth-reducer";
 import { ROUTES } from "app/Pages";
+import { RejectedWithValueType, useActions, useAppSelector } from "common/hooks";
 import { selectCaptcha, selectIsLoggedIn } from "features/Auth/auth.selectors";
-import { useActions, useAppSelector } from "common/hooks";
 import { LoginParamsType } from "features/Auth/authAPI";
-import { authThunks } from "features/Auth/auth-reducer";
-import { RejectedWithValueType } from "common/hooks";
 
 export const Login = () => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -30,7 +29,7 @@ export const Login = () => {
             captcha,
         },
         validate: (values: LoginParamsType) => {
-            const errors: Partial<Omit<LoginParamsType, "rememberMe" | "captcha">> = {};
+            const errors: Partial<Omit<LoginParamsType, "rememberMe">> = {};
             if (!values.email) {
                 errors.email = "Required";
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
@@ -46,6 +45,13 @@ export const Login = () => {
         onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
             login(values)
                 .unwrap()
+                .then((resp: LoginThunkReturnType) => {
+                    if (resp.serverResp) {
+                        resp.serverResp.fieldsErrors.forEach(f => {
+                            f.field && formikHelpers.setFieldError(f.field, f.error);
+                        });
+                    }
+                })
                 .catch((reason: RejectedWithValueType) => {
                     reason.data.fieldsErrors.forEach(f => {
                         f.field && formikHelpers.setFieldError(f.field, f.error);
@@ -59,8 +65,8 @@ export const Login = () => {
     }
 
     return (
-        <Grid container justifyContent={"center"}>
-            <Grid item justifyContent={"center"}>
+        <Grid container justifyContent="center">
+            <Grid item justifyContent="center">
                 <form onSubmit={formik.handleSubmit}>
                     <FormControl>
                         <FormLabel>
@@ -76,21 +82,33 @@ export const Login = () => {
                             <p>Password: free</p>
                         </FormLabel>
                         <FormGroup>
-                            <TextField label="Email" margin="normal" {...formik.getFieldProps("email")} />
-                            {formik.touched.email && formik.errors.email && (
-                                <div style={{ color: "red" }}>{formik.errors.email}</div>
-                            )}
+                            <TextField
+                                label="Email"
+                                margin="normal"
+                                error={!!formik.touched.email && !!formik.errors.email}
+                                helperText={formik.errors.email}
+                                {...formik.getFieldProps("email")}
+                                FormHelperTextProps={{
+                                    style: {
+                                        fontSize: "11pt",
+                                    },
+                                }}
+                            />
                             <TextField
                                 type="password"
                                 label="Password"
                                 margin="normal"
+                                error={!!formik.touched.password && !!formik.errors.email}
+                                helperText={formik.errors.password}
+                                FormHelperTextProps={{
+                                    style: {
+                                        fontSize: "11pt",
+                                    },
+                                }}
                                 {...formik.getFieldProps("password")}
                             />
-                            {formik.touched.password && formik.errors.password && (
-                                <div style={{ color: "red" }}>{formik.errors.password}</div>
-                            )}
                             <FormControlLabel
-                                label={"Remember me"}
+                                label="Remember me"
                                 control={
                                     <Checkbox
                                         {...formik.getFieldProps("rememberMe")}
@@ -101,13 +119,14 @@ export const Login = () => {
                             {captcha && (
                                 <div>
                                     <img src={captcha} alt="captcha" />
-                                    <TextField type="text" {...formik.getFieldProps("captcha")} />
-                                    {formik.errors.captcha && (
-                                        <div style={{ color: "red" }}>{formik.errors.captcha}</div>
-                                    )}
+                                    <TextField
+                                        type="text"
+                                        error={!!formik.touched.captcha && !!formik.errors.captcha}
+                                        helperText={formik.touched.captcha && formik.errors.captcha && formik.errors.captcha}
+                                        {...formik.getFieldProps("captcha")} />
                                 </div>
                             )}
-                            <Button type={"submit"} variant={"contained"} color={"primary"}>
+                            <Button type="submit" variant="contained" color="primary">
                                 Login
                             </Button>
                         </FormGroup>

@@ -43,7 +43,6 @@ const slice = createSlice({
                 },
                 (state, action) => {
                     // handle server errors that come with HTTP status code 200
-                    console.log(action);
                     if (action.payload) {
                         if (action.payload.isShowError) {
                             state.error = action.payload.data.messages.length ? action.payload.data.messages[0] : "Some error occurred";

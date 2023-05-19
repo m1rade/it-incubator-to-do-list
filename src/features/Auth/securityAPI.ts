@@ -6,6 +6,6 @@ export const securityAPI = {
     },
 };
 
-type GetCaptchaRespType = {
+export type GetCaptchaRespType = {
     url: string;
 };

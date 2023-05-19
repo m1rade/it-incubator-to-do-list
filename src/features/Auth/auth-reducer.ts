@@ -3,77 +3,75 @@ import { appActions } from "app/app-reducer";
 import { createAppAsyncThunk } from "common/hooks";
 import { ResultCodes } from "common/enums";
 import { clearTodosTasks } from "common/actions";
-import { handleServerNetworkError } from "common/utils";
 import { authAPI, LoginParamsType } from "features/Auth/authAPI";
-import { securityAPI } from "features/Auth/securityAPI";
+import { GetCaptchaRespType, securityAPI } from "features/Auth/securityAPI";
+import { ServerResponseType } from "common/types";
 
-const login = createAppAsyncThunk<{ isLoggedIn: boolean; captcha?: string }, LoginParamsType>(
+const login = createAppAsyncThunk<LoginThunkReturnType, LoginParamsType>(
     "auth/login",
-    async (args, thunkAPI) => {
-        const { dispatch, rejectWithValue } = thunkAPI;
+    async (args, { dispatch, rejectWithValue }) => {
+        dispatch(authActions.clearCaptchaURL());
 
-            const resp = await authAPI.login(args);
-
-            if (resp.data.resultCode === ResultCodes.OK) {
-                return { isLoggedIn: true };
-            } else if (resp.data.resultCode === ResultCodes.Captcha) {
-                dispatch(authThunks.getCaptcha());
-                return { isLoggedIn: false };
-            } else {
-                const isShowError = !resp.data.fieldsErrors.length;
-                return rejectWithValue({ data: resp.data, isShowError });
-            }
+        const resp = await authAPI.login(args);
+        if (resp.data.resultCode === ResultCodes.OK) {
+            return { isLoggedIn: true };
+        } else if (resp.data.resultCode === ResultCodes.Captcha) {
+            dispatch(authThunks.getCaptcha());
+            return {
+                isLoggedIn: false,
+                serverResp: resp.data,
+            };
+        } else {
+            const isShowError = !resp.data.fieldsErrors.length;
+            return rejectWithValue({ data: resp.data, isShowError });
+        }
     },
 );
 
-const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, void>("auth/logout", async (_, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI;
-
-    const resp = await authAPI.logout();
-
-    if (resp.data.resultCode === ResultCodes.OK) {
-        dispatch(clearTodosTasks());
-        return { isLoggedIn: false };
-    } else {
-        return rejectWithValue({ data: resp.data, isShowError: true });
-    }
-});
-
-const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>("app/initializeApp", async (_, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI;
-
-    try {
-        const resp = await authAPI.authMe();
+const logout = createAppAsyncThunk<{ isLoggedIn: boolean }, void>("auth/logout",
+    async (_, { dispatch, rejectWithValue }) => {
+        const resp = await authAPI.logout();
 
         if (resp.data.resultCode === ResultCodes.OK) {
-            return { isLoggedIn: true };
+            dispatch(clearTodosTasks());
+            return { isLoggedIn: false };
         } else {
-            return rejectWithValue({ data: resp.data, isShowError: false });
+            return rejectWithValue({ data: resp.data, isShowError: true });
         }
-    } finally {
-        dispatch(appActions.setAppInitialized({ isInitialized: true }));
-    }
-});
+    });
 
-const getCaptcha = createAppAsyncThunk<{ captchaURL: string }, void>("auth/getCaptcha", async (_, thunkAPI) => {
-    const { dispatch, rejectWithValue } = thunkAPI;
+const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>("app/initializeApp",
+    async (_, { dispatch, rejectWithValue }) => {
+        try {
+            const resp = await authAPI.authMe();
 
-    try {
+            if (resp.data.resultCode === ResultCodes.OK) {
+                return { isLoggedIn: true };
+            } else {
+                return rejectWithValue({ data: resp.data, isShowError: false });
+            }
+        } finally {
+            dispatch(appActions.setAppInitialized({ isInitialized: true }));
+        }
+    });
+
+const getCaptcha = createAppAsyncThunk<GetCaptchaRespType, void>("auth/getCaptcha",
+    async () => {
         const resp = await securityAPI.getCaptcha();
-        return { captchaURL: resp.data.url };
-    } catch (e) {
-        handleServerNetworkError(e, dispatch);
-        return rejectWithValue(null);
-    }
-});
+        return resp.data;
+    });
 
 const slice = createSlice({
     name: "auth",
     initialState: {
         isLoggedIn: false,
-        captcha: "",
+        captchaURL: null as string | null,
     },
-    reducers: {},
+    reducers: {
+        clearCaptchaURL: (state) => {
+            state.captchaURL = null;
+        },
+    },
     extraReducers: builder => {
         builder
             .addCase(authThunks.login.fulfilled, (state, action) => {
@@ -86,7 +84,7 @@ const slice = createSlice({
                 state.isLoggedIn = action.payload.isLoggedIn;
             })
             .addCase(authThunks.getCaptcha.fulfilled, (state, action) => {
-                state.captcha = action.payload.captchaURL;
+                state.captchaURL = action.payload.url;
             });
     },
 });
@@ -94,3 +92,10 @@ const slice = createSlice({
 export const authReducer = slice.reducer;
 export const authActions = slice.actions;
 export const authThunks = { login, logout, initializeApp, getCaptcha };
+
+
+// types
+export type LoginThunkReturnType = {
+    isLoggedIn: boolean,
+    serverResp?: ServerResponseType
+}
