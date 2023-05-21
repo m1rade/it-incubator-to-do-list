@@ -8,14 +8,22 @@ import { AppNavBar, ErrorSnackbar } from "common/components";
 import { useAppSelector } from "common/hooks";
 import { authThunks } from "features/Auth/auth-reducer";
 import { useActions } from "common/hooks";
+import { useLocation } from "react-router-dom";
+import { TITLES } from "app/titles";
 
 const App = () => {
     const isInitialized = useAppSelector(selectIsInitialized);
     const { initializeApp } = useActions(authThunks);
 
+    const location = useLocation();
+
     useEffect(() => {
         initializeApp({});
     }, []);
+
+    useEffect(() => {
+        document.title = TITLES[location.pathname] ?? "Page not found"
+    }, [location])
 
     if (!isInitialized) {
         return (
