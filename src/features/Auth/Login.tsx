@@ -85,8 +85,8 @@ export const Login = () => {
                             <TextField
                                 label="Email"
                                 margin="normal"
-                                error={!!formik.touched.email && !!formik.errors.email}
-                                helperText={formik.errors.email}
+                                error={formik.touched.email && Boolean(formik.errors.email)}
+                                helperText={formik.touched.email && formik.errors.email}
                                 {...formik.getFieldProps("email")}
                                 FormHelperTextProps={{
                                     style: {
@@ -98,8 +98,8 @@ export const Login = () => {
                                 type="password"
                                 label="Password"
                                 margin="normal"
-                                error={!!formik.touched.password && !!formik.errors.email}
-                                helperText={formik.errors.password}
+                                error={formik.touched.password && Boolean(formik.errors.password)}
+                                helperText={formik.touched.password && formik.errors.password}
                                 FormHelperTextProps={{
                                     style: {
                                         fontSize: "11pt",
@@ -121,8 +121,8 @@ export const Login = () => {
                                     <img src={captcha} alt="captcha" />
                                     <TextField
                                         type="text"
-                                        error={!!formik.touched.captcha && !!formik.errors.captcha}
-                                        helperText={formik.touched.captcha && formik.errors.captcha && formik.errors.captcha}
+                                        error={formik.touched.captcha && Boolean(formik.errors.captcha)}
+                                        helperText={formik.touched.captcha && formik.errors.captcha}
                                         {...formik.getFieldProps("captcha")} />
                                 </div>
                             )}
