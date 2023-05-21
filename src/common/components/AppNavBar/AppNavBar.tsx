@@ -9,6 +9,9 @@ import { selectIsLoggedIn } from "features/Auth/auth.selectors";
 import { selectStatus } from "app/app.selectors";
 import { useActions, useAppSelector } from "common/hooks";
 import { authThunks } from "features/Auth/auth-reducer";
+import { NavLink } from "react-router-dom";
+import { ROUTES } from "app/Routes";
+import s from "./styles.module.css";
 
 export const AppNavBar = memo(() => {
     const status = useAppSelector(selectStatus);
@@ -24,7 +27,9 @@ export const AppNavBar = memo(() => {
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        To do lists
+                        <NavLink to={ROUTES.HOME} className={s.rootLink}>
+                            To do lists
+                        </NavLink>
                     </Typography>
                     {isLoggedIn && (
                         <Button color="inherit" onClick={logoutHandler}>
